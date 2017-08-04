@@ -55,9 +55,11 @@ class game {
         // Tiempo máximo para responder
         float maxAnswerTime = 15;
         // Tiempo entre preguntas
-        float timeToNextQuestion = 5;
+        float timeToNextQuestion = 1;
         // Tiempo al final
-        float timeToEnjoyPoints = 10;
+        float timeToEnjoyPoints = 20;
         // Último elapsed time guardado en postaziones
         float lastElapsedTime[3];
+    
+        ofTrueTypeFont pointsFont;
 };
