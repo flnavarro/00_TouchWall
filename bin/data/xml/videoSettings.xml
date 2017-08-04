@@ -1,0 +1,98 @@
+<videoPositions>
+    <video>
+        <name>E00</name>
+        <desc>Fiat Video E00</desc>
+        <videoWidth>250</videoWidth>
+        <posX>37</posX>
+        <posY>115</posY>
+        <electrode>E00</electrode>
+    </video>
+    <video>
+        <name>E01</name>
+        <desc>Fiat Video E01</desc>
+        <videoWidth>250</videoWidth>
+        <posX>290</posX>
+        <posY>58</posY>
+        <electrode>E01</electrode>
+    </video>
+    <video>
+        <name>E02</name>
+        <desc>Fiat Video E02</desc>
+        <videoWidth>250</videoWidth>
+        <posX>504</posX>
+        <posY>236</posY>
+        <electrode>E02</electrode>
+    </video>
+    <video>
+        <name>E03</name>
+        <desc>Fiat Video E03</desc>
+        <videoWidth>250</videoWidth>
+        <posX>51</posX>
+        <posY>438</posY>
+        <electrode>E03</electrode>
+    </video>
+    <video>
+        <name>E04</name>
+        <desc>Fiat Video E04</desc>
+        <videoWidth>250</videoWidth>
+        <posX>256</posX>
+        <posY>496</posY>
+        <electrode>E04</electrode>
+    </video>
+    <video>
+        <name>E05</name>
+        <desc>Fiat Video E05</desc>
+        <videoWidth>250</videoWidth>
+        <posX>638</posX>
+        <posY>587</posY>
+        <electrode>E05</electrode>
+    </video>
+    <video>
+        <name>E06</name>
+        <desc>Fiat Video E06</desc>
+        <videoWidth>250</videoWidth>
+        <posX>863</posX>
+        <posY>72</posY>
+        <electrode>E06</electrode>
+    </video>
+    <video>
+        <name>E07</name>
+        <desc>Fiat Video E07</desc>
+        <videoWidth>250</videoWidth>
+        <posX>1150</posX>
+        <posY>142</posY>
+        <electrode>E07</electrode>
+    </video>
+    <video>
+        <name>E08</name>
+        <desc>Fiat Video E08</desc>
+        <videoWidth>250</videoWidth>
+        <posX>1518</posX>
+        <posY>135</posY>
+        <electrode>E08</electrode>
+    </video>
+    <video>
+        <name>E09</name>
+        <desc>Fiat Video E09</desc>
+        <videoWidth>250</videoWidth>
+        <posX>805</posX>
+        <posY>460</posY>
+        <electrode>E09</electrode>
+    </video>
+    <video>
+        <name>E10</name>
+        <desc>Fiat Video E10</desc>
+        <videoWidth>250</videoWidth>
+        <posX>1073</posX>
+        <posY>531</posY>
+        <electrode>E10</electrode>
+    </video>
+    <video>
+        <name>E11</name>
+        <desc>Fiat Video E11</desc>
+        <videoWidth>250</videoWidth>
+        <posX>1577</posX>
+        <posY>696</posY>
+        <electrode>E11</electrode>
+    </video>
+</videoPositions>

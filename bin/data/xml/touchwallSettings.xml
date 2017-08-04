@@ -1,0 +1,7 @@
+<touchWallSettings>
+    <touchDeviceId>1</touchDeviceId>
+    <videoType>VID</videoType>
+    <videoLoadingMode>REQUEST</videoLoadingMode>
+    <videoLink>AUTO</videoLink>
+    <guiActive>YES</guiActive>
+</touchWallSettings>
