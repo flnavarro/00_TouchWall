@@ -6,6 +6,7 @@
 #include "gui.h"
 #include "settings.h"
 #include "video.h"
+#include "game.h"
 
 #define N_ELECT 12
 
@@ -41,6 +42,9 @@ class ofApp : public ofBaseApp{
     
     // Video
     video video;
+    
+    // Game
+    game game;
     
     // GUI
     gui gui;

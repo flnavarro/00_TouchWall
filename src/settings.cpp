@@ -10,7 +10,7 @@
 
 void settings::setup(){
     
-    // General Settings By Defaultkljglj
+    // General Settings By Default
     // Device ID for TouchBoard
     touchDeviceId = 1;
     // Video Type (VID o PNG)

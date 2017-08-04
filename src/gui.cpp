@@ -15,30 +15,30 @@ void gui::setup(int numElect,  bool guiActive, vector<ofPoint> videoPosition){
     
     isActive = guiActive;
     
-    for(int i=0; i<nElect; i++){
-        videoGui.push_back(new ofxDatGui( ofxDatGuiAnchor::TOP_LEFT ));
-        videoGui[i]->addHeader("Vid E" + ofToString(i));
-        videoGui[i]->setPosition(videoPosition[i].x, videoPosition[i].y);
-        guiPos.push_back(videoGui[i]->getPosition());
-    }
+//    for(int i=0; i<nElect; i++){
+//        videoGui.push_back(new ofxDatGui( ofxDatGuiAnchor::TOP_LEFT ));
+//        videoGui[i]->addHeader("Vid E" + ofToString(i));
+//        videoGui[i]->setPosition(videoPosition[i].x, videoPosition[i].y);
+//        guiPos.push_back(videoGui[i]->getPosition());
+//    }
 }
 
 void gui::update(vector<bool> touchStatus){
     touchBdStatus = touchStatus;
     
-    if(isActive){
-        updateVideoSettings = false;
-        
-        for(int i=0; i<nElect; i++){
-            videoGui[i]->update();
-            ofPoint p;
-            p = videoGui[i]->getPosition();
-            if(p!=guiPos[i]){
-                guiPos[i] = p;
-                updateVideoSettings = true;
-            }
-        }
-    }
+//    if(isActive){
+//        updateVideoSettings = false;
+//        
+//        for(int i=0; i<nElect; i++){
+//            videoGui[i]->update();
+//            ofPoint p;
+//            p = videoGui[i]->getPosition();
+//            if(p!=guiPos[i]){
+//                guiPos[i] = p;
+//                updateVideoSettings = true;
+//            }
+//        }
+//    }
 }
 
 void gui::draw(){
@@ -69,7 +69,7 @@ void gui::changeStatus(){
     } else {
         ofHideCursor();
     }
-    for(int i=0; i<nElect; i++){
-        videoGui[i]->setVisible(isActive);
-    }
+//    for(int i=0; i<nElect; i++){
+//        videoGui[i]->setVisible(isActive);
+//    }
 }

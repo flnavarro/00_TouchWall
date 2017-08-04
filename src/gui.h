@@ -33,6 +33,4 @@ class gui {
         vector<ofPoint> guiPos;
         bool updateVideoSettings;
     
-    
-
 };
