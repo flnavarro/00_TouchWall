@@ -39,7 +39,7 @@ void ofApp::update(){
     gui.update(touch.touchStatus);
     if( gui.updateVideoSettings ){
         settings.updateVideoSettings(gui.guiPos);
-        video.updateVideoSettings(settings.videoPosition);
+        // video.updateVideoSettings(settings.videoPosition);
     }
     
 //    video.update(touch.touchStatus);

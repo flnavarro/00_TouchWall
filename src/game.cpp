@@ -57,6 +57,7 @@ void game::setup(int nElect){
     postazionePos[1] = ofVec2f(600, 100);
     postazionePos[2] = ofVec2f(1200, 100);
     
+    timeFont.load("fonts/Verdana.ttf", 10);
     pointsFont.load("fonts/Verdana.ttf", 60);
 }
 
@@ -100,7 +101,7 @@ void game::update(vector<bool> touchStatus){
                 }
             }
             else if(postazioneStep[i] == "showing answer"
-                    or postazioneStep[i] == "showing timeout"){
+                    || postazioneStep[i] == "showing timeout"){
                 if(ofGetElapsedTimef()-lastElapsedTime[i] > timeToNextQuestion){
                     if(questionId[i] + 1 < 5){
                         questionId[i]++;
@@ -133,7 +134,9 @@ void game::draw(){
         if(postazioneStatus[i]){
             ofSetColor(255, 255, 255, alphaPostazione[i]);
             postazione[i][questionId[i]][imgId[i]].draw(postazionePos[i]);
-            if(postazioneStep[i] == "showing points"){
+            if (postazioneStep[i] == "waiting for answer"){
+                timeFont.drawString(ofToString(maxAnswerTime-(ofGetElapsedTimef()-lastElapsedTime[i])), postazionePos[i].x+350, postazionePos[i].y+100);
+            } else if(postazioneStep[i] == "showing points"){
                 pointsFont.drawString(ofToString(postazionePoints[i]),
                                       postazionePos[i].x+350, postazionePos[i].y+400);
             }

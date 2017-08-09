@@ -21,6 +21,8 @@ void gui::setup(int numElect,  bool guiActive, vector<ofPoint> videoPosition){
 //        videoGui[i]->setPosition(videoPosition[i].x, videoPosition[i].y);
 //        guiPos.push_back(videoGui[i]->getPosition());
 //    }
+    
+    panel.load("debugImg/panel.png");
 }
 
 void gui::update(vector<bool> touchStatus){
@@ -43,6 +45,8 @@ void gui::update(vector<bool> touchStatus){
 
 void gui::draw(){
     if(isActive){
+        float index = ofGetWidth()/panel.getWidth();
+        panel.draw(0, 0, ofGetWidth(), panel.getHeight()*index);
         drawTouchBdStatus();
     }
 }

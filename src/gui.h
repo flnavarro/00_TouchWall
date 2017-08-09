@@ -33,4 +33,6 @@ class gui {
         vector<ofPoint> guiPos;
         bool updateVideoSettings;
     
+        // Image
+        ofImage panel;
 };

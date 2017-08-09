@@ -61,5 +61,6 @@ class game {
         // Último elapsed time guardado en postaziones
         float lastElapsedTime[3];
     
+        ofTrueTypeFont timeFont;
         ofTrueTypeFont pointsFont;
 };
