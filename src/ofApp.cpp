@@ -37,10 +37,10 @@ void ofApp::update(){
     touch.update();
     
     gui.update(touch.touchStatus);
-    if( gui.updateVideoSettings ){
-        settings.updateVideoSettings(gui.guiPos);
+    // if( gui.updateVideoSettings ){
+        // settings.updateVideoSettings(gui.guiPos);
         // video.updateVideoSettings(settings.videoPosition);
-    }
+    // }
     
 //    video.update(touch.touchStatus);
     
@@ -53,7 +53,7 @@ void ofApp::draw(){
 //    video.draw();
     
     gui.draw();
-    
+
     game.draw();
 }
 

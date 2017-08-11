@@ -45,8 +45,8 @@ void gui::update(vector<bool> touchStatus){
 
 void gui::draw(){
     if(isActive){
-        float index = ofGetWidth()/panel.getWidth();
-        panel.draw(0, 0, ofGetWidth(), panel.getHeight()*index);
+        ofSetColor(255,255,255,255);
+        panel.draw(0, 0);
         drawTouchBdStatus();
     }
 }
