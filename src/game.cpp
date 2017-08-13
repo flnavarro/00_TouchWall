@@ -18,8 +18,11 @@ void game::setup(int nElect){
         touchStatus.push_back(false);
     }
     
+    touchwallStatus = false;
+    
     loadButtons();
     
+    sequenceFPS = 2;
     loadAllImages();
     
     postazione_0 = ofVec2f(7, 113);
@@ -46,11 +49,7 @@ void game::setup(int nElect){
     postazioneStep[2] = postazioneStep[0];
     // ************* //
     
-    touchwallStatus = false;
-    
-    sequenceFPS = 2;
-    
-    // TODO: CHANGE THIS
+    // TODO: NOT USED
     alphaPostazione[0] = 255;
     alphaPostazione[1] = 255;
     alphaPostazione[2] = 255;
@@ -60,12 +59,16 @@ void game::setup(int nElect){
 }
 
 void game::update(vector<bool> touchStatus){
+    // --- State 0 - "all waiting touch" --- //
     if(!postazioneStatus[0] && !postazioneStatus[1] && !postazioneStatus[2]){
         touchwallStatus = false;
-    } else {
+    }
+    // --- State 1 - "waiting touch" --- //
+    else {
         touchwallStatus = true;
     }
     
+    // --- State 1 - "waiting touch" --- //
     if( !touchwallStatus ||
         (postazioneStep[0]!="pre-game" &&
          postazioneStep[1]!="pre-game" &&
@@ -76,26 +79,48 @@ void game::update(vector<bool> touchStatus){
     
     // Recorremos las 3 postaziones
     for( int i=0; i<3; i++ ){
+        
+        // --- State 1 - "waiting touch" --- //
         // Si se toca el botón touch de Postazione y el juego no está activo
         if(!postazioneStatus[i] && touchStatus[postElectIndex[i]] && !is_debugging){
             // Comenzar juego
             startPostazione(i);
+            updateTimer(i);
         }
+        
+        // Para Postazione N=i - ACTIVA
         if(postazioneStatus[i]){
-            ofLog() << "POSTAZIONE " << i << " // STEP-> " << postazioneStep[i];
+            
+            // Recoger elapsed time
             float thisElapsedTime = ofGetElapsedTimef() - lastElapsedTime[i];
+            
+            // --- State 2 - "pre-game" --- //
             if(postazioneStep[i] == "pre-game"){
+                // Actualizar animación pre-game
                 frameIndex_p123[i] = (int)(thisElapsedTime * sequenceFPS) % a_pos123_st2[i].size();
                 if(frameIndex_p123[i] == 0 && prevFrameIndex_p123[i]!=0 && !is_debugging){
+                    // Cuando la animación acaba, pasamos al siguiente estado
                     postazioneStep[i] = "waiting for answer";
                     frameIndex_p123[i] = 0;
                     prevFrameIndex_p123[i] = 0;
+                    updateTimer(i);
                 }
                 prevFrameIndex_p123[i] = frameIndex_p123[i];
-            } else if(postazioneStep[i] == "waiting for answer"){
+            }
+            
+            // --- State 3 - "waiting answer" --- //
+            else if(postazioneStep[i] == "waiting for answer"){
                 if(thisElapsedTime < maxAnswerTime){
                     // Recorremos los 3 botones ABC
                     for(int j=0; j<3; j++){
+                        // Actualizamos animación niño
+                        if(thisElapsedTime < maxAnswerTime-lastSecondsAmount){
+                            frameIndex_kid[i] = (int)(thisElapsedTime * sequenceFPS) % a_kid_wait[i].size();
+                            kid_wait_st3[i] = true;
+                        } else {
+                            frameIndex_kid[i] = (int)(thisElapsedTime * sequenceFPS) % a_kid_time[i].size();
+                            kid_wait_st3[i] = false;
+                        }
                         // Si se toca algún botón ABC
                         if(touchStatus[optionElectIndex[i][j]]){
                             // Cargar imagen correspondiente de respuesta
@@ -104,40 +129,47 @@ void game::update(vector<bool> touchStatus){
                             if(imgAnswerId[i] == postCorrectAnswer[i][questionId[i]]){
                                 postazionePoints[i] += 20;
                             }
-                            // Cambiar a paso de enseñar la respuesta
+                            // Cambiar estado -> enseñar la respuesta
                             postazioneStep[i] = "showing answer";
                             updateTimer(i);
                         }
-                        if(thisElapsedTime < maxAnswerTime-lastSecondsAmount){
-                            frameIndex_kid[i] = (int)(thisElapsedTime * sequenceFPS) % a_kid_wait[i].size();
-                            kid_wait_st3[i] = true;
-                        } else {
-                            frameIndex_kid[i] = (int)(thisElapsedTime * sequenceFPS) % a_kid_time[i].size();
-                            kid_wait_st3[i] = false;
-                        }
                     }
                 } else {
-                    // Si se acaba el tiempo - enseñar timeout
+                    // Si se acaba el tiempo -> enseñar timeout
                     imgAnswerId[i] = 3;
                     postazioneStep[i] = "showing timeout";
                     updateTimer(i);
                 }
-            } else if(postazioneStep[i] == "showing answer" ||
+            }
+            
+            // --- State 4 - "showing answer or timeout" --- //
+            else if(postazioneStep[i] == "showing answer" ||
                       postazioneStep[i] == "showing timeout"){
+                // Si el tiempo de enseñar respuesta o timeout acaba
                 if(ofGetElapsedTimef()-lastElapsedTime[i] > timeToNextQuestion){
                     if(questionId[i] + 1 < 5){
+                        // Si no estamos en la última pregunta,
+                        // pasamos al siguiente index de pregunta y cambiamos el estado
                         questionId[i]++;
                         postazioneStep[i] = "waiting for answer";
                     } else if (questionId[i] + 1 == 5) {
-                        if(postazionePoints[i] >= 60){
+                        // Si estamos en la última pregunta,
+                        // comprobamos si los puntos son suficientes para el aprobado
+                        if(postazionePoints[i] >= pointsToPass){
+                            // índice para imagen copa
                             imgAnswerId[i] = 0;
                         } else {
+                            // índice para imagen libro
                             imgAnswerId[i] = 1;
                         }
+                        // cambiamos el estado
                         postazioneStep[i] = "showing points";
                     }
                     updateTimer(i);
-                } else {
+                }
+                // Si estamos enseñando respuesta o timeout
+                else {
+                    // Actualizar animación de niño correspondiente
                     if(imgAnswerId[i] == postCorrectAnswer[i][questionId[i]]){
                         frameIndex_kid[i] = (int)(thisElapsedTime * sequenceFPS) % a_kid_correct_st4[i].size();
                         kid_correct_st4[i] = true;
@@ -146,12 +178,20 @@ void game::update(vector<bool> touchStatus){
                         kid_correct_st4[i] = false;
                     }
                 }
-            } else if(postazioneStep[i] == "showing points"){
+            }
+            
+            // --- State 5 - "showing points" --- //
+            else if(postazioneStep[i] == "showing points"){
+                // Si el tiempo de enseñar la puntuación termina
                 if(thisElapsedTime > timeToEnjoyPoints){
+                    // Desactivamos la Postazione
                     postazioneStep[i] = "waiting touch";
                     postazioneStatus[i] = false;
-                } else {
-                    if(postazionePoints[i] >= 60){
+                }
+                // Si estamos enseñando la puntuación
+                else {
+                    // Actualizar animación de niño correspondiente
+                    if(postazionePoints[i] >= pointsToPass){
                         frameIndex_kid[i] = (int)(thisElapsedTime * sequenceFPS) % a_kid_correct_st5[i].size();
                         kid_correct_st5[i] = true;
                     } else {
@@ -160,8 +200,12 @@ void game::update(vector<bool> touchStatus){
                     }
                 }
             }
-        } else {
+        }
+        // Para Postazione N=i - NO ACTIVA
+        else {
+            // Si otra Postazione está ACTIVA
             if(touchwallStatus){
+                // Actualizar el index de animación "de llamada de atención" para Postazione N=i
                 frameIndex_p123[i] = (int)(ofGetElapsedTimef() * sequenceFPS) % a_pos123_st1[i].size();
             }
         }
@@ -169,7 +213,6 @@ void game::update(vector<bool> touchStatus){
 }
 
 void game::draw(){
-    // POSTAZIONE 0
     if( !touchwallStatus ||
         (postazioneStep[0]!="pre-game" &&
          postazioneStep[1]!="pre-game" &&
@@ -178,26 +221,42 @@ void game::draw(){
         a_pos0_st0[frameIndex_p0].draw(postazione_0.x, postazione_0.y);
     }
 
+    // Recorremos las 3 postaziones
     for( int i=0; i<3; i++ ){
+        
+        // Para Postazione N=i - ACTIVA
         if(postazioneStatus[i]){
+            
+            // Recoger elapsed time
             float thisElapsedTime = ofGetElapsedTimef()-lastElapsedTime[i];
-            // POSTAZIONE 1, 2, 3
+            
+            // --- State 2 - "pre-game" --- //
             if(postazioneStep[i] == "pre-game"){
+                // Animación Postazione 1, 2, 3
                 a_pos123_st2[i][frameIndex_p123[i]].draw(0, 0);
             }
+            
+            // --- State 3 - "waiting answer" --- //
             else if(postazioneStep[i] == "waiting for answer"){
+                // Imagen pregunta - p. 1, 2, 3
                 i_pos123_st3[i][questionId[i]].draw(postazionePos[i].x, postazionePos[i].y);
                 
+                // Animación niño esperando / niño últimos segundos
                 if(kid_wait_st3[i]){
                     a_kid_wait[i][frameIndex_kid[i]].draw(postazionePos[i].x, postazionePos[i].y);
                 } else {
                     a_kid_time[i][frameIndex_kid[i]].draw(postazionePos[i].x, postazionePos[i].y);
                 }
                 
+                // Animación flecha tiempo
                 ofPushStyle();
                 ofPushMatrix();
                     ofTranslate(arrow_pos[i].x + i_arrow[i].getWidth()/2, arrow_pos[i].y + i_arrow[i].getHeight()/2);//move pivot to centre
-                    ofRotate(ofGetFrameNum() * .5, 0, 0, 1);//rotate from centre
+                    if(i==0 || i==2){
+                        ofRotate(ofMap(thisElapsedTime, 0.0, 15.0, 0, 270));
+                    } else if (i==1){
+                        ofRotate(ofMap(thisElapsedTime, 0.0, 15.0, 0, 290));
+                    }
                     ofPushMatrix();
                         ofTranslate(-arrow_pos[i].x-i_arrow[i].getWidth()/2,-arrow_pos[i].y-i_arrow[i].getHeight()/2);//move back by the centre offset
                         ofSetColor(255, 255, 255, 255);
@@ -206,31 +265,47 @@ void game::draw(){
                 ofPopMatrix();
                 ofPopStyle();
                 
+                // Texto tiempo restante
                 timeFont.drawString(ofToString(maxAnswerTime-thisElapsedTime),
                                     postazionePos[i].x+350, postazionePos[i].y+100);
             }
+            
+            // --- State 4 - "showing answer or timeout" --- //
             else if(postazioneStep[i] == "showing answer" ||
                     postazioneStep[i] == "showing timeout"){
+                // Imagen respuesta - p. 1, 2, 3
                 i_pos123_st4[i][imgAnswerId[i]][questionId[i]].draw(postazionePos[i].x, postazionePos[i].y);
                 
+                // Animación niño respuesta correcta / incorrecta
                 if(kid_correct_st4[i]){
                     a_kid_correct_st4[i][frameIndex_kid[i]].draw(postazionePos[i].x, postazionePos[i].y);
                 } else {
                     a_kid_wrong_st4[i][frameIndex_kid[i]].draw(postazionePos[i].x, postazionePos[i].y);
                 }
             }
+            
+            // --- State 5 - "showing points" --- //
             else if(postazioneStep[i] == "showing points"){
-                pointsFont.drawString(ofToString(postazionePoints[i]),
-                                      postazionePos[i].x+350, postazionePos[i].y+400);
+                // Imagen copa / libro
+                i_points_img[i][imgAnswerId[i]].draw(postazionePos[i].x, postazionePos[i].y);
                 
+                // Animación niño puntuación aprobado / suspendido
                 if(kid_correct_st5[i]){
                     a_kid_correct_st5[i][frameIndex_kid[i]].draw(postazionePos[i].x, postazionePos[i].y);
                 } else {
                     a_kid_wrong_st5[i][frameIndex_kid[i]].draw(postazionePos[i].x, postazionePos[i].y);
                 }
+                
+                // Texto puntos
+                pointsFont.drawString(ofToString(postazionePoints[i]),
+                                      postazionePos[i].x+350, postazionePos[i].y+400);
             }
-        } else {
+        }
+        // Para Postazione N=i - NO ACTIVA
+        else {
+            // Si otra Postazione está ACTIVA
             if(touchwallStatus){
+                // Draw animación "de llamada de atención" para Postazione N=i
                 a_pos123_st1[i][frameIndex_p123[i]].draw(postazionePos[i].x, postazionePos[i].y);
             }
         }
@@ -238,6 +313,8 @@ void game::draw(){
 }
 
 void game::startPostazione(int postId){
+    // Activar la Postazione N=postId e inicializar variables asociadas
+    // Pasamos de State 1 (waiting touch) a State 2 (pre-game)
     postazioneStatus[postId] = true;
     postazioneStep[postId] = "pre-game";
     postazionePoints[postId] = 0;
@@ -245,10 +322,10 @@ void game::startPostazione(int postId){
     frameIndex_p123[postId] = 0;
     prevFrameIndex_p123[postId] = 0;
     frameIndex_kid[postId] = 0;
-    updateTimer(postId);
 }
 
 void game::updateTimer(int postId){
+    // Actualizar last elapsed time para la Postazione N=postId
     lastElapsedTime[postId] = ofGetElapsedTimef();
     frameIndex_kid[postId] = 0;
 }
@@ -282,6 +359,8 @@ void game::loadButtons(){
     // Postazione 3 - Botón C
     optionElectIndex[2][2] = 11;
     
+    // Índice de respuestas correctas
+    // TODO: Pasar a XML
     postCorrectAnswer[0][0] = 0;
     postCorrectAnswer[0][1] = 1;
     postCorrectAnswer[0][2] = 2;
@@ -300,6 +379,7 @@ void game::loadButtons(){
 }
 
 void game::loadAllImages(){
+    // Cargar todas las imágenes y animaciones necesarias
     ofDirectory d;
     for(int state=0; state<6; state++){
         switch(state){
@@ -518,8 +598,14 @@ void game::loadAllImages(){
                 }
                 
                 // POINTS IMAGES
-                pointsImg[0].load("media/state_5/image/QEND_SI.png");
-                pointsImg[1].load("media/state_5/image/QEND_NO.png");
+                for(int i=0; i<3; i++){
+                    i_points_img[i][0].load("media/state_5/image/QEND_SI.png");
+                    i_points_img[i][0].resize(i_points_img[i][0].getWidth()*resizeFactor[i],
+                                              i_points_img[i][0].getHeight()*resizeFactor[i]);
+                    i_points_img[i][1].load("media/state_5/image/QEND_NO.png");
+                    i_points_img[i][1].resize(i_points_img[i][1].getWidth()*resizeFactor[i],
+                                              i_points_img[i][1].getHeight()*resizeFactor[i]);
+                }
             }
                 break;
                 

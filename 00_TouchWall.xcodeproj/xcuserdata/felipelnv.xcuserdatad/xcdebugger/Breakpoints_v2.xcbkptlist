@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "src/game.cpp"
-            timestampString = "524164522.258221"
+            timestampString = "524317108.406377"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "241"
-            endingLineNumber = "241"
+            startingLineNumber = "250"
+            endingLineNumber = "250"
             landmarkName = "game::startPostazione(int postId)"
             landmarkType = "5">
          </BreakpointContent>

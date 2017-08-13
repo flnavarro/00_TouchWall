@@ -21,101 +21,130 @@ class game {
         void startPostazione(int postId);
         void updateTimer(int postId);
     
-        // Bare Conductive
-        int nElectrodes;
+        // Debug
+        bool is_debugging;
     
         // Directorio Imágenes
         ofDirectory dir;
     
-        // Postazione
-        int postCorrectAnswer[3][5];
+        // Texto en pantalla
+        ofTrueTypeFont timeFont;
+        ofTrueTypeFont pointsFont;
     
-        //
-        int questionId[3];
-        int imgAnswerId[3];
-        int alphaPostazione[3];
-        ofVec2f postazionePos[3];
-    
+        // WALL & PLACA
+        // Bare Conductive
+        int nElectrodes;
         // Estado del electrodo (touched/not touched)
         vector<bool> touchStatus;
-        // Estado de la postazione (playing/stopped)
-        bool postazioneStatus[3];
-        // Estado del touchwall (any postazione is active?)
-        bool touchwallStatus;
-
         // Indice del electrodo asociado a cada uno
         // de los botones de Play Postazione
         int postElectIndex[3];
         // Indice del electrodo asociado a cada uno
         // de los botones de Opciones ABC
         int optionElectIndex[3][3];
-    
-        // Pasos de cada pregunta
+
+        // POSTAZIONE 1, 2, 3
+        // Estado del touchwall (any postazione is active?)
+        bool touchwallStatus;
+        // Estado de la postazione (playing/stopped)
+        bool postazioneStatus[3];
+        // Pasos de cada pregunta en cada postazione
         string postazioneStep[3];
+        // Puntos para cada postazione
         int postazionePoints[3];
-    
+        // Posición en pantalla de cada una de las postaziones
+        ofVec2f postazionePos[3];
+        // Posición de postazione 0 a la izquierda (información)
+        ofVec2f postazione_0;
+        // Indices de pregunta y respuesta para cada postazione
+        int questionId[3];
+        int imgAnswerId[3];
+        // Alpha de imágenes [FIJO DE MOMENTO]
+        int alphaPostazione[3];
+
+        // TODO: Pasar a XML
+        // Respuestas correctas (indice)
+        int postCorrectAnswer[3][5];
         // Tiempo máximo para responder
         float maxAnswerTime = 15;
+        // Últimos segundos para cada pregunta
+        // (Activa otra animación)
+        float lastSecondsAmount = 5;
         // Tiempo entre preguntas
         float timeToNextQuestion = 5;
-        // Tiempo al final
-        float timeToEnjoyPoints = 20;
-        // Último elapsed time guardado en postaziones
-        float lastElapsedTime[3];
-        float lastSecondsAmount = 5;
-    
-        ofTrueTypeFont timeFont;
-        ofTrueTypeFont pointsFont;
-    
-        int frameIndex_kid[3];
-    
-        // Anim index
+        // Tiempo para la puntuación
+        float timeToEnjoyPoints = 10;
+        // Puntos mínimos para aprobar el juego
+        int pointsToPass = 60;
+
+        // ANIMACIONES
+        // FPS de secuencia
         int sequenceFPS;
+        // Índice de frame para las animaciones del niño
+        int frameIndex_kid[3];
+        // Índice de frame para la Postazione 0
         int frameIndex_p0;
+        // Índice de frame para la Postazione 1, 2, 3
         int frameIndex_p123[3];
-        int prevFrameIndex_p123[3];
+        int prevFrameIndex_p123[3]; // frame previo
+        // Último elapsed time guardado en postaziones
+        float lastElapsedTime[3]; //p. 1, 2, 3
+
     
-        ofVec2f postazione_0;
-    
-        // State 0 - "all waiting touch"
+        // ------------- STATES ------------- //
+        // --- State 0 - "all waiting touch" --- //
+        // Animación Postazione 0
         vector<ofImage> a_pos0_st0;
     
-        // State 1 - "waiting touch"
+        // --- State 1 - "waiting touch" --- //
+        // Animación Postazione 0
         vector<ofImage> a_pos0_st1;
+        // Animación Postazione 1, 2, 3
         vector<ofImage> a_pos123_st1[3];
     
-        // State 2 - "pre-game"
+        // --- State 2 - "pre-game" --- //
+        // Animación Postazione 1, 2, 3
         vector<ofImage> a_pos123_st2[3];
-        //vector<ofImage> a_pos2_st2;
-        //vector<ofImage> a_pos3_st2;
     
-        // State 3 - "waiting answer"
+        // --- State 3 - "waiting answer" --- //
+        // Animación Postazione 0
         vector<ofImage> a_pos0_st3;
-        ofImage i_arrow[3];
-        ofVec2f arrow_pos[3];
-        vector<ofImage> a_kid_wait[3];
-        vector<ofImage> a_kid_time[3];
-        vector<ofImage> i_pos123_st3[3];
-        //ofImage pos2_st3[5];
-        //ofImage pos3_st3[5];
+        // Imágenes para las preguntas
+        vector<ofImage> i_pos123_st3[3]; // postazione 1, 2, 3
+        // Imagen de flecha de tiempo (animación por rotación)
+        ofImage i_arrow[3]; // p. 1, 2, 3
+        // Posición imagen flecha tiempo
+        ofVec2f arrow_pos[3]; // p. 1, 2, 3
+        // Animación niño esperando a respuesta
+        vector<ofImage> a_kid_wait[3]; // p. 1, 2, 3
+        // Animación niño esperando (últimos segundos)
+        vector<ofImage> a_kid_time[3]; // p. 1, 2, 3
+        // Niño esperando (true) o niño en últimos segundos (false)
+        bool kid_wait_st3[3]; // p. 1, 2, 3
 
-        // State 4 - "showing result"
-        vector<ofImage> a_kid_correct_st4[3];
-        vector<ofImage> a_kid_wrong_st4[3];
+
+        // --- State 4 - "showing answer or timeout" --- //
+        // Animación Postazione 0
         vector<ofImage> a_pos0_st4;
-        vector<ofImage> i_pos123_st4[3][4];
-        ofImage pos2_st4[5][4];
-        ofImage pos3_st4[5][4];
+        // Imágenes para respuesta elegida o imagen timeout
+        vector<ofImage> i_pos123_st4[3][4]; // p. 1, 2, 3
+        // Animación niño (respuesta correcta)
+        vector<ofImage> a_kid_correct_st4[3]; // p. 1, 2, 3
+        // Animación niño (respuesta incorrecta)
+        vector<ofImage> a_kid_wrong_st4[3]; // p. 1, 2, 3
+        // Niño respuesta correcta (true) o incorrecta (false)
+        bool kid_correct_st4[3]; // p. 1, 2, 3
     
-        // State 5 - "showing points"
-        vector<ofImage> a_kid_correct_st5[3];
-        vector<ofImage> a_kid_wrong_st5[3];
+        // --- State 5 - "showing points" --- //
+        // Animación Postazione 0
         vector<ofImage> a_pos0_st5;
-        ofImage pointsImg[2];
-    
-        bool kid_wait_st3[3];
-        bool kid_correct_st4[3];
+        // Imagen de libro o copa según puntuación
+        ofImage i_points_img[3][2]; // p. 1, 2, 3
+        // Animación niño puntuación positiva (aprobado)
+        vector<ofImage> a_kid_correct_st5[3];
+        // Animación niño puntuación negativa (suspendido)
+        vector<ofImage> a_kid_wrong_st5[3];
+        // Niño puntuación aprobada (true) o suspendida (false)
         bool kid_correct_st5[3];
-    
-        bool is_debugging;
+        // ------------- STATES ------------- //
 };
