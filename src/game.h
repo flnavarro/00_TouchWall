@@ -54,8 +54,14 @@ class game {
         int postazionePoints[3];
         // Posición en pantalla de cada una de las postaziones
         ofVec2f postazionePos[3];
+        // Posición en pantalla de cada una de las postaziones
+        // [ VERSIÓN FINAL ANIMACIONES ]
+        ofVec2f postazionePos_NEW[3];
         // Posición de postazione 0 a la izquierda (información)
         ofVec2f postazione_0;
+        // Posición en pantalla de cada una de las postaziones
+        // [ VERSIÓN FINAL ANIMACIONES ]
+        ofVec2f postazione_0_NEW;
         // Indices de pregunta y respuesta para cada postazione
         int questionId[3];
         int imgAnswerId[3];
@@ -95,30 +101,38 @@ class game {
         // --- State 0 - "all waiting touch" --- //
         // Animación Postazione 0
         vector<ofImage> a_pos0_st0;
+        bool a_pos0_st0_NEW;
     
         // --- State 1 - "waiting touch" --- //
         // Animación Postazione 0
         vector<ofImage> a_pos0_st1;
+        bool a_pos0_st1_NEW;
         // Animación Postazione 1, 2, 3
         vector<ofImage> a_pos123_st1[3];
+        bool a_pos123_st1_NEW;
     
         // --- State 2 - "pre-game" --- //
         // Animación Postazione 1, 2, 3
+        // [ OK PARA VERSIÓN FINAL- no necesita booleano _NEW ]
         vector<ofImage> a_pos123_st2[3];
     
         // --- State 3 - "waiting answer" --- //
         // Animación Postazione 0
         vector<ofImage> a_pos0_st3;
+        bool a_pos0_st3_NEW;
         // Imágenes para las preguntas
         vector<ofImage> i_pos123_st3[3]; // postazione 1, 2, 3
+        bool i_pos123_st3_NEW;
         // Imagen de flecha de tiempo (animación por rotación)
-        ofImage i_arrow[3]; // p. 1, 2, 3
+        ofImage i_arrow[3]; // p. 1, 2, 3 - [ OK FINAL ]
         // Posición imagen flecha tiempo
-        ofVec2f arrow_pos[3]; // p. 1, 2, 3
+        ofVec2f arrow_pos[3]; // p. 1, 2, 3 - [ OK FINAL ]
         // Animación niño esperando a respuesta
         vector<ofImage> a_kid_wait[3]; // p. 1, 2, 3
+        bool a_kid_wait_NEW;
         // Animación niño esperando (últimos segundos)
         vector<ofImage> a_kid_time[3]; // p. 1, 2, 3
+        bool a_kid_time_NEW;
         // Niño esperando (true) o niño en últimos segundos (false)
         bool kid_wait_st3[3]; // p. 1, 2, 3
 
@@ -126,24 +140,30 @@ class game {
         // --- State 4 - "showing answer or timeout" --- //
         // Animación Postazione 0
         vector<ofImage> a_pos0_st4;
+        bool a_pos0_st4_NEW;
         // Imágenes para respuesta elegida o imagen timeout
         vector<ofImage> i_pos123_st4[3][4]; // p. 1, 2, 3
-        // Animación niño (respuesta correcta)
+        bool i_pos123_st4_NEW;
+        // Animación niño (respuesta correcta) - [ OK FINAL ]
         vector<ofImage> a_kid_correct_st4[3]; // p. 1, 2, 3
         // Animación niño (respuesta incorrecta)
         vector<ofImage> a_kid_wrong_st4[3]; // p. 1, 2, 3
+        bool a_kid_wrong_st4_NEW;
         // Niño respuesta correcta (true) o incorrecta (false)
         bool kid_correct_st4[3]; // p. 1, 2, 3
     
         // --- State 5 - "showing points" --- //
         // Animación Postazione 0
         vector<ofImage> a_pos0_st5;
+        bool a_pos0_st5_NEW;
         // Imagen de libro o copa según puntuación
         ofImage i_points_img[3][2]; // p. 1, 2, 3
+        bool i_points_img_NEW;
         // Animación niño puntuación positiva (aprobado)
-        vector<ofImage> a_kid_correct_st5[3];
+        vector<ofImage> a_kid_correct_st5[3]; // [ OK FINAL ]
         // Animación niño puntuación negativa (suspendido)
         vector<ofImage> a_kid_wrong_st5[3];
+        bool a_kid_wrong_st5_NEW;
         // Niño puntuación aprobada (true) o suspendida (false)
         bool kid_correct_st5[3];
         // ------------- STATES ------------- //

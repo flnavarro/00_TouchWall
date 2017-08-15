@@ -22,13 +22,17 @@ void game::setup(int nElect){
     
     loadButtons();
     
-    sequenceFPS = 2;
+    sequenceFPS = 24;
     loadAllImages();
     
     postazione_0 = ofVec2f(7, 113);
     postazionePos[0] = ofVec2f(305, 55);
     postazionePos[1] = ofVec2f(750, -25);
     postazionePos[2] = ofVec2f(1350, 55);
+    postazione_0_NEW = ofVec2f(0, 0);
+    postazionePos_NEW[0] = ofVec2f(360, 0);
+    postazionePos_NEW[1] = ofVec2f(360 + 490, 0);
+    postazionePos_NEW[2] = ofVec2f(360 + 490 + 580 - 25, 0);
     
     // ** USEFUL TO DEBUG ** //
     is_debugging = false;
@@ -218,12 +222,19 @@ void game::draw(){
          postazioneStep[1]!="pre-game" &&
          postazioneStep[2]!="pre-game")
        ){
-        a_pos0_st0[frameIndex_p0].draw(postazione_0.x, postazione_0.y);
+        if(a_pos0_st0_NEW){
+            // [ DRAW POSITION PARA VERSIÓN FINAL ]
+            a_pos0_st0[frameIndex_p0].draw(postazione_0_NEW.x, postazione_0_NEW.y);
+        } else {
+            a_pos0_st0[frameIndex_p0].draw(postazione_0.x, postazione_0.y);
+        }
     }
 
     // Recorremos las 3 postaziones
     for( int i=0; i<3; i++ ){
         
+        ofPushStyle();
+        ofSetColor(255, 255, 255, 255);
         // Para Postazione N=i - ACTIVA
         if(postazioneStatus[i]){
             
@@ -239,13 +250,28 @@ void game::draw(){
             // --- State 3 - "waiting answer" --- //
             else if(postazioneStep[i] == "waiting for answer"){
                 // Imagen pregunta - p. 1, 2, 3
-                i_pos123_st3[i][questionId[i]].draw(postazionePos[i].x, postazionePos[i].y);
+                if(i_pos123_st3_NEW){
+                    // [ DRAW POSITION PARA VERSIÓN FINAL ]
+                    i_pos123_st3[i][questionId[i]].draw(postazionePos_NEW[i].x, postazionePos_NEW[i].y);
+                } else {
+                    i_pos123_st3[i][questionId[i]].draw(postazionePos[i].x, postazionePos[i].y);
+                }
                 
                 // Animación niño esperando / niño últimos segundos
                 if(kid_wait_st3[i]){
-                    a_kid_wait[i][frameIndex_kid[i]].draw(postazionePos[i].x, postazionePos[i].y);
+                    if(a_kid_wait_NEW){
+                        // [ DRAW POSITION PARA VERSIÓN FINAL ]
+                        a_kid_wait[i][frameIndex_kid[i]].draw(postazionePos_NEW[i].x, postazionePos_NEW[i].y);
+                    } else {
+                        a_kid_wait[i][frameIndex_kid[i]].draw(postazionePos[i].x, postazionePos[i].y);
+                    }
                 } else {
-                    a_kid_time[i][frameIndex_kid[i]].draw(postazionePos[i].x, postazionePos[i].y);
+                    if(a_kid_time_NEW){
+                        // [ DRAW POSITION PARA VERSIÓN FINAL ]
+                        a_kid_time[i][frameIndex_kid[i]].draw(postazionePos_NEW[i].x, postazionePos_NEW[i].y);
+                    } else {
+                        a_kid_time[i][frameIndex_kid[i]].draw(postazionePos[i].x, postazionePos[i].y);
+                    }
                 }
                 
                 // Animación flecha tiempo
@@ -274,26 +300,48 @@ void game::draw(){
             else if(postazioneStep[i] == "showing answer" ||
                     postazioneStep[i] == "showing timeout"){
                 // Imagen respuesta - p. 1, 2, 3
-                i_pos123_st4[i][imgAnswerId[i]][questionId[i]].draw(postazionePos[i].x, postazionePos[i].y);
+                if(i_pos123_st4_NEW){
+                    // [ DRAW POSITION PARA VERSIÓN FINAL ]
+                    i_pos123_st4[i][imgAnswerId[i]][questionId[i]].draw(postazionePos_NEW[i].x, postazionePos_NEW[i].y);
+                } else {
+                    i_pos123_st4[i][imgAnswerId[i]][questionId[i]].draw(postazionePos[i].x, postazionePos[i].y);
+                }
                 
                 // Animación niño respuesta correcta / incorrecta
                 if(kid_correct_st4[i]){
-                    a_kid_correct_st4[i][frameIndex_kid[i]].draw(postazionePos[i].x, postazionePos[i].y);
+                    // [ YA OK - VERSIÓN FINAL ]
+                    a_kid_correct_st4[i][frameIndex_kid[i]].draw(postazionePos_NEW[i].x, postazionePos_NEW[i].y);
                 } else {
-                    a_kid_wrong_st4[i][frameIndex_kid[i]].draw(postazionePos[i].x, postazionePos[i].y);
+                    if(a_kid_wrong_st4_NEW){
+                        // [ DRAW POSITION PARA VERSIÓN FINAL ]
+                        a_kid_wrong_st4[i][frameIndex_kid[i]].draw(postazionePos_NEW[i].x, postazionePos_NEW[i].y);
+                    } else {
+                        a_kid_wrong_st4[i][frameIndex_kid[i]].draw(postazionePos[i].x, postazionePos[i].y);
+                    }
                 }
             }
             
             // --- State 5 - "showing points" --- //
             else if(postazioneStep[i] == "showing points"){
                 // Imagen copa / libro
-                i_points_img[i][imgAnswerId[i]].draw(postazionePos[i].x, postazionePos[i].y);
+                if(i_points_img_NEW){
+                    // [ DRAW POSITION PARA VERSIÓN FINAL ]
+                    i_points_img[i][imgAnswerId[i]].draw(postazionePos_NEW[i].x, postazionePos_NEW[i].y);
+                } else {
+                    i_points_img[i][imgAnswerId[i]].draw(postazionePos[i].x, postazionePos[i].y);
+                }
                 
                 // Animación niño puntuación aprobado / suspendido
                 if(kid_correct_st5[i]){
-                    a_kid_correct_st5[i][frameIndex_kid[i]].draw(postazionePos[i].x, postazionePos[i].y);
+                    // [ YA OK - VERSIÓN FINAL ]
+                    a_kid_correct_st5[i][frameIndex_kid[i]].draw(postazionePos_NEW[i].x, postazionePos_NEW[i].y);
                 } else {
-                    a_kid_wrong_st5[i][frameIndex_kid[i]].draw(postazionePos[i].x, postazionePos[i].y);
+                    if(a_kid_wrong_st5_NEW){
+                        // [ DRAW POSITION PARA VERSIÓN FINAL ]
+                        a_kid_wrong_st5[i][frameIndex_kid[i]].draw(postazionePos_NEW[i].x, postazionePos_NEW[i].y);
+                    } else {
+                        a_kid_wrong_st5[i][frameIndex_kid[i]].draw(postazionePos[i].x, postazionePos[i].y);
+                    }
                 }
                 
                 // Texto puntos
@@ -306,9 +354,14 @@ void game::draw(){
             // Si otra Postazione está ACTIVA
             if(touchwallStatus){
                 // Draw animación "de llamada de atención" para Postazione N=i
-                a_pos123_st1[i][frameIndex_p123[i]].draw(postazionePos[i].x, postazionePos[i].y);
+                if(!a_pos123_st1_NEW){
+                    a_pos123_st1[i][frameIndex_p123[i]].draw(postazionePos[i].x, postazionePos[i].y);
+                } else {
+                    a_pos123_st1[i][frameIndex_p123[i]].draw(postazionePos_NEW[i].x, postazionePos_NEW[i].y);
+                }
             }
         }
+        ofPopStyle();
     }
 }
 
@@ -388,14 +441,19 @@ void game::loadAllImages(){
             // STATE 0 - 3 postazione are "waiting touch"
             case 0:
             {
+                // VERSIÓN DEFINITIVA ?
+                a_pos0_st0_NEW = false;
+
                 // POSTAZIONE 0
                 float percent = 1.1;
                 d.listDir("media/state_0/animation/postazione_0");
                 for(int i=0; i<d.size(); i++){
                     a_pos0_st0.push_back(ofImage());
                     a_pos0_st0[i].load(d.getPath(i));
-                    a_pos0_st0[i].resize(a_pos0_st0[i].getWidth()*percent,
-                                         a_pos0_st0[i].getHeight()*percent);
+                    if(!a_pos0_st0_NEW){
+                        a_pos0_st0[i].resize(a_pos0_st0[i].getWidth()*percent,
+                                             a_pos0_st0[i].getHeight()*percent);
+                    }
                 }
             }
                 break;
@@ -404,28 +462,47 @@ void game::loadAllImages(){
             // STATE 1 - some postazione "waiting touch"
             case 1:
             {
+                // VERSIÓN DEFINITIVA ?
+                a_pos0_st1_NEW = false;
+                
                 // POSTAZIONE 0
                 float percent = 1.1;
                 d.listDir("media/state_1/animation/postazione_0");
                 for(int i=0; i<d.size(); i++){
                     a_pos0_st1.push_back(ofImage());
                     a_pos0_st1[i].load(d.getPath(i));
-                    a_pos0_st1[i].resize(a_pos0_st1[i].getWidth()*percent,
-                                         a_pos0_st1[i].getHeight()*percent);
+                    if(!a_pos0_st1_NEW){
+                        a_pos0_st1[i].resize(a_pos0_st1[i].getWidth()*percent,
+                                             a_pos0_st1[i].getHeight()*percent);
+                    }
                 }
                 
+                // VERSIÓN DEFINITIVA ?
+                a_pos123_st1_NEW = false;
+                
                 // POSTAZIONE 1, 2, 3 (same animation - diff variables)
-                d.listDir("media/state_1/animation/postazione_123");
+                string folderKidAnimation[3];
+                folderKidAnimation[0] = "media/state_1/animation/postazione_13";
+                folderKidAnimation[1] = "media/state_1/animation/postazione_2";
+                folderKidAnimation[2] = folderKidAnimation[0];
                 float resizeFactor[3];
                 resizeFactor[0] = 1.55;
                 resizeFactor[1] = 1.95;
                 resizeFactor[2] = resizeFactor[0];
+                if(!a_pos123_st1_NEW){
+                    d.listDir("media/state_1/animation/postazione_123");
+                }
                 for(int i=0; i<3; i++){
+                    if(a_pos123_st1_NEW){
+                        d.listDir(folderKidAnimation[i]);
+                    }
                     for(int j=0; j<d.size(); j++){
                         a_pos123_st1[i].push_back(ofImage());
                         a_pos123_st1[i][j].load(d.getPath(j));
-                        a_pos123_st1[i][j].resize(a_pos123_st1[i][j].getWidth()*resizeFactor[i],
-                                                  a_pos123_st1[i][j].getHeight()*resizeFactor[i]);
+                        if(!a_pos123_st1_NEW){
+                            a_pos123_st1[i][j].resize(a_pos123_st1[i][j].getWidth()*resizeFactor[i],
+                                                      a_pos123_st1[i][j].getHeight()*resizeFactor[i]);
+                        }
                     }
                 }
             }
@@ -450,14 +527,19 @@ void game::loadAllImages(){
             // STATE 3 - "waiting for answer"
             case 3:
             {
+                // VERSIÓN FINAL ?
+                a_pos0_st3_NEW = false;
+                
                 // POSTAZIONE 0
                 float percent = 1.1;
                 d.listDir("media/state_3/animation/postazione_0");
                 for(int i=0; i<d.size(); i++){
                     a_pos0_st3.push_back(ofImage());
                     a_pos0_st3[i].load(d.getPath(i));
-                    a_pos0_st3[i].resize(a_pos0_st3[i].getWidth()*percent,
-                                         a_pos0_st3[i].getHeight()*percent);
+                    if(!a_pos0_st3_NEW){
+                        a_pos0_st3[i].resize(a_pos0_st3[i].getWidth()*percent,
+                                             a_pos0_st3[i].getHeight()*percent);
+                    }
                 }
                 
                 // TIME ARROW
@@ -468,37 +550,67 @@ void game::loadAllImages(){
                 arrow_pos[1] = ofVec2f(812, 29);
                 arrow_pos[2] = ofVec2f(1395, 98);
                 
+                // VERSIÓN FINAL ?
+                i_pos123_st3_NEW = false;
+                a_kid_wait_NEW = false;
+                a_kid_time_NEW = false;
+                
                 // POSTAZIONE 1, 2, 3 (question images)
                 float resizeFactor[3];
                 resizeFactor[0] = 1.55;
                 resizeFactor[1] = 1.95;
                 resizeFactor[2] = resizeFactor[0];
+                string folderKidWait[3];
+                folderKidWait[0] = "media/state_3/animation/kid_0_wait_13";
+                folderKidWait[1] = "media/state_3/animation/kid_0_wait_2";
+                folderKidWait[2] = folderKidWait[0];
+                string folderKidTime[3];
+                folderKidTime[0] = "media/state_3/animation/kid_1_time_13";
+                folderKidTime[1] = "media/state_3/animation/kid_1_time_2";
+                folderKidTime[2] = folderKidTime[0];
+                
                 for(int i=0; i<3; i++){
                     // QUESTION images
                     d.listDir("media/state_3/image/postazione_" + ofToString(i+1));
                     for(int j=0; j<d.size(); j++){
                         i_pos123_st3[i].push_back(ofImage());
                         i_pos123_st3[i][j].load(d.getPath(j));
-                        i_pos123_st3[i][j].resize(i_pos123_st3[i][j].getWidth()*resizeFactor[i],
-                                                  i_pos123_st3[i][j].getHeight()*resizeFactor[i]);
+                        if(!i_pos123_st3_NEW){
+                            i_pos123_st3[i][j].resize(i_pos123_st3[i][j].getWidth()*resizeFactor[i],
+                                                      i_pos123_st3[i][j].getHeight()*resizeFactor[i]);
+                        }
                     }
                     
                     // KID WAIT
-                    d.listDir("media/state_3/animation/kid_0_wait");
+                    if(!a_kid_wait_NEW){
+                        d.listDir("media/state_3/animation/kid_0_wait");
+                    }
                     for(int j=0; j<d.size(); j++){
+                        if(a_kid_wait_NEW){
+                            d.listDir(folderKidWait[0]);
+                        }
                         a_kid_wait[i].push_back(ofImage());
                         a_kid_wait[i][j].load(d.getPath(j));
-                        a_kid_wait[i][j].resize(a_kid_wait[i][j].getWidth()*resizeFactor[i],
-                                                a_kid_wait[i][j].getHeight()*resizeFactor[i]);
+                        if(!a_kid_wait_NEW){
+                            a_kid_wait[i][j].resize(a_kid_wait[i][j].getWidth()*resizeFactor[i],
+                                                    a_kid_wait[i][j].getHeight()*resizeFactor[i]);
+                        }
                     }
                     
                     // KID TIME
-                    d.listDir("media/state_3/animation/kid_1_time");
+                    if(!a_kid_time_NEW){
+                        d.listDir("media/state_3/animation/kid_1_time");
+                    }
                     for(int j=0; j<d.size(); j++){
+                        if(a_kid_time_NEW){
+                            d.listDir(folderKidTime[0]);
+                        }
                         a_kid_time[i].push_back(ofImage());
                         a_kid_time[i][j].load(d.getPath(j));
-                        a_kid_time[i][j].resize(a_kid_time[i][j].getWidth()*resizeFactor[i],
-                                                a_kid_time[i][j].getHeight()*resizeFactor[i]);
+                        if(!a_kid_time_NEW){
+                            a_kid_time[i][j].resize(a_kid_time[i][j].getWidth()*resizeFactor[i],
+                                                    a_kid_time[i][j].getHeight()*resizeFactor[i]);
+                        }
                     }
                 }
                 
@@ -508,21 +620,38 @@ void game::loadAllImages(){
             // STATE 4 - "showing answer/timeout"
             case 4:
             {
+                // VERSIÓN FINAL ?
+                a_pos0_st4_NEW = false;
+                
                 // POSTAZIONE 0
                 float percent = 1.1;
                 d.listDir("media/state_4/animation/postazione_0");
                 for(int i=0; i<d.size(); i++){
                     a_pos0_st4.push_back(ofImage());
                     a_pos0_st4[i].load(d.getPath(i));
-                    a_pos0_st4[i].resize(a_pos0_st4[i].getWidth()*percent,
-                                         a_pos0_st4[i].getHeight()*percent);
+                    if(!a_pos0_st4_NEW){
+                        a_pos0_st4[i].resize(a_pos0_st4[i].getWidth()*percent,
+                                             a_pos0_st4[i].getHeight()*percent);
+                    }
                 }
+                
+                // VERSIÓN FINAL ?
+                i_pos123_st4_NEW = false;
+                a_kid_wrong_st4_NEW = false;
                 
                 // POSTAZIONE 1, 2, 3 (answer and timeout images)
                 float resizeFactor[3];
                 resizeFactor[0] = 1.55;
                 resizeFactor[1] = 1.95;
                 resizeFactor[2] = resizeFactor[0];
+                string folderCorrect[3];
+                folderCorrect[0] = "media/state_4/animation/kid_correct_13";
+                folderCorrect[1] = "media/state_4/animation/kid_correct_2";
+                folderCorrect[2] = folderCorrect[0];
+                string folderWrong[3];
+                folderWrong[0] = "media/state_4/animation/kid_wrong_13";
+                folderWrong[1] = "media/state_4/animation/kid_wrong_2";
+                folderWrong[2] = folderWrong[0];
                 for(int i=0; i<3; i++){
                     // ANSWER and TIMEOUT images
                     d.listDir("media/state_4/image/postazione_" + ofToString(i+1));
@@ -533,27 +662,33 @@ void game::loadAllImages(){
                                        "/question_" + ofToString(k+1));
                             i_pos123_st4[i][j].push_back(ofImage());
                             i_pos123_st4[i][j][k].load(d2.getPath(j));
-                            i_pos123_st4[i][j][k].resize(i_pos123_st4[i][j][k].getWidth()*resizeFactor[i],
-                                                         i_pos123_st4[i][j][k].getHeight()*resizeFactor[i]);
+                            if(!i_pos123_st4_NEW){
+                                i_pos123_st4[i][j][k].resize(i_pos123_st4[i][j][k].getWidth()*resizeFactor[i],
+                                                             i_pos123_st4[i][j][k].getHeight()*resizeFactor[i]);
+                            }
                         }
                     }
                     
                     // KID CORRECT
-                    d.listDir("media/state_4/animation/kid_correct");
+                    d.listDir(folderCorrect[i]);
                     for(int j=0; j<d.size(); j++){
                         a_kid_correct_st4[i].push_back(ofImage());
                         a_kid_correct_st4[i][j].load(d.getPath(j));
-                        a_kid_correct_st4[i][j].resize(a_kid_correct_st4[i][j].getWidth()*resizeFactor[i],
-                                                       a_kid_correct_st4[i][j].getHeight()*resizeFactor[i]);
                     }
                     
                     // KID WRONG
-                    d.listDir("media/state_4/animation/kid_wrong");
+                    if(!a_kid_wrong_st4_NEW){
+                        d.listDir("media/state_4/animation/kid_wrong");
+                    } else {
+                        d.listDir(folderWrong[i]);
+                    }
                     for(int j=0; j<d.size(); j++){
                         a_kid_wrong_st4[i].push_back(ofImage());
                         a_kid_wrong_st4[i][j].load(d.getPath(j));
-                        a_kid_wrong_st4[i][j].resize(a_kid_wrong_st4[i][j].getWidth()*resizeFactor[i],
-                                                     a_kid_wrong_st4[i][j].getHeight()*resizeFactor[i]);
+                        if(!a_kid_wrong_st4_NEW){
+                            a_kid_wrong_st4[i][j].resize(a_kid_wrong_st4[i][j].getWidth()*resizeFactor[i],
+                                                         a_kid_wrong_st4[i][j].getHeight()*resizeFactor[i]);
+                        }
                     }
                 }
             }
@@ -562,49 +697,72 @@ void game::loadAllImages(){
             // STATE 5 - "showing points"
             case 5:
             {
+                // VERSIÓN FINAL ?
+                a_pos0_st5_NEW = false;
+                
                 // POSTAZIONE 0
                 float percent = 1.1;
                 d.listDir("media/state_4/animation/postazione_0");
                 for(int i=0; i<d.size(); i++){
                     a_pos0_st5.push_back(ofImage());
                     a_pos0_st5[i].load(d.getPath(i));
-                    a_pos0_st5[i].resize(a_pos0_st5[i].getWidth()*percent,
-                                         a_pos0_st5[i].getHeight()*percent);
+                    if(!a_pos0_st5_NEW){
+                        a_pos0_st5[i].resize(a_pos0_st5[i].getWidth()*percent,
+                                             a_pos0_st5[i].getHeight()*percent);
+                    }
                 }
+                
+                // VERSIÓN FINAL ?
+                i_points_img_NEW = false;
+                a_kid_wrong_st5_NEW = false;
                 
                 // CORRECT or WRONG
                 float resizeFactor[3];
                 resizeFactor[0] = 1.55;
                 resizeFactor[1] = 1.95;
                 resizeFactor[2] = resizeFactor[0];
+                string folderCorrect[3];
+                folderCorrect[0] = "media/state_5/animation/kid_correct_13";
+                folderCorrect[1] = "media/state_5/animation/kid_correct_2";
+                folderCorrect[2] = folderCorrect[0];
+                string folderWrong[3];
+                folderWrong[0] = "media/state_5/animation/kid_wrong_13";
+                folderWrong[1] = "media/state_5/animation/kid_wrong_2";
+                folderWrong[2] = folderWrong[0];
                 for(int i=0; i<3; i++){
                     // KID CORRECT
-                    d.listDir("media/state_5/animation/kid_correct");
+                    d.listDir(folderCorrect[i]);
                     for(int j=0; j<d.size(); j++){
                         a_kid_correct_st5[i].push_back(ofImage());
                         a_kid_correct_st5[i][j].load(d.getPath(j));
-                        a_kid_correct_st5[i][j].resize(a_kid_correct_st5[i][j].getWidth()*resizeFactor[i],
-                                                       a_kid_correct_st5[i][j].getHeight()*resizeFactor[i]);
                     }
                     
                     // KID WRONG
-                    d.listDir("media/state_5/animation/kid_wrong");
+                    if(!a_kid_wrong_st5_NEW){
+                        d.listDir("media/state_5/animation/kid_wrong");
+                    } else {
+                        d.listDir(folderWrong[i]);
+                    }
                     for(int j=0; j<d.size(); j++){
                         a_kid_wrong_st5[i].push_back(ofImage());
                         a_kid_wrong_st5[i][j].load(d.getPath(j));
-                        a_kid_wrong_st5[i][j].resize(a_kid_wrong_st5[i][j].getWidth()*resizeFactor[i],
-                                                     a_kid_wrong_st5[i][j].getHeight()*resizeFactor[i]);
+                        if(!a_kid_wrong_st5_NEW){
+                            a_kid_wrong_st5[i][j].resize(a_kid_wrong_st5[i][j].getWidth()*resizeFactor[i],
+                                                         a_kid_wrong_st5[i][j].getHeight()*resizeFactor[i]);
+                        }
                     }
                 }
                 
                 // POINTS IMAGES
                 for(int i=0; i<3; i++){
                     i_points_img[i][0].load("media/state_5/image/QEND_SI.png");
-                    i_points_img[i][0].resize(i_points_img[i][0].getWidth()*resizeFactor[i],
-                                              i_points_img[i][0].getHeight()*resizeFactor[i]);
                     i_points_img[i][1].load("media/state_5/image/QEND_NO.png");
-                    i_points_img[i][1].resize(i_points_img[i][1].getWidth()*resizeFactor[i],
-                                              i_points_img[i][1].getHeight()*resizeFactor[i]);
+                    if(!i_points_img_NEW){
+                        i_points_img[i][0].resize(i_points_img[i][0].getWidth()*resizeFactor[i],
+                                                  i_points_img[i][0].getHeight()*resizeFactor[i]);
+                        i_points_img[i][1].resize(i_points_img[i][1].getWidth()*resizeFactor[i],
+                                                  i_points_img[i][1].getHeight()*resizeFactor[i]);
+                    }
                 }
             }
                 break;
