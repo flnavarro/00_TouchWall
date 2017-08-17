@@ -20,7 +20,6 @@
 		EA913E7E1F2F6E4300E9065B /* ofxDatGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA913E771F2F6E4300E9065B /* ofxDatGui.cpp */; };
 		EA913E911F349CEF00E9065B /* game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA913E8F1F349CEF00E9065B /* game.cpp */; };
 		EAD829521F2A3F8F0059458D /* settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD829501F2A3F8F0059458D /* settings.cpp */; };
-		EAD829551F2A3FAC0059458D /* video.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD829531F2A3FAC0059458D /* video.cpp */; };
 		EAD8295F1F2A423A0059458D /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD829581F2A423A0059458D /* ofxXmlSettings.cpp */; };
 		EAD829601F2A423A0059458D /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD8295B1F2A423A0059458D /* tinyxml.cpp */; };
 		EAD829611F2A423A0059458D /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD8295D1F2A423A0059458D /* tinyxmlerror.cpp */; };
@@ -104,8 +103,6 @@
 		EA913E901F349CEF00E9065B /* game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = game.h; sourceTree = "<group>"; };
 		EAD829501F2A3F8F0059458D /* settings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = settings.cpp; sourceTree = "<group>"; };
 		EAD829511F2A3F8F0059458D /* settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = settings.h; sourceTree = "<group>"; };
-		EAD829531F2A3FAC0059458D /* video.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = video.cpp; sourceTree = "<group>"; };
-		EAD829541F2A3FAC0059458D /* video.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = video.h; sourceTree = "<group>"; };
 		EAD829581F2A423A0059458D /* ofxXmlSettings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxXmlSettings.cpp; sourceTree = "<group>"; };
 		EAD829591F2A423A0059458D /* ofxXmlSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxXmlSettings.h; sourceTree = "<group>"; };
 		EAD8295B1F2A423A0059458D /* tinyxml.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
@@ -176,8 +173,6 @@
 				EA1F6B381F2A0D1D0081792B /* touchBoard.h */,
 				EA913E8F1F349CEF00E9065B /* game.cpp */,
 				EA913E901F349CEF00E9065B /* game.h */,
-				EAD829531F2A3FAC0059458D /* video.cpp */,
-				EAD829541F2A3FAC0059458D /* video.h */,
 				EA913E5A1F2F6D4C00E9065B /* gui.cpp */,
 				EA913E5B1F2F6D4C00E9065B /* gui.h */,
 			);
@@ -417,7 +412,6 @@
 				EAD8295F1F2A423A0059458D /* ofxXmlSettings.cpp in Sources */,
 				EAD829601F2A423A0059458D /* tinyxml.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
-				EAD829551F2A3FAC0059458D /* video.cpp in Sources */,
 				EAD829621F2A423A0059458D /* tinyxmlparser.cpp in Sources */,
 				EA913E7C1F2F6E4300E9065B /* ofxDatGuiComponent.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,

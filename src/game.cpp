@@ -22,17 +22,17 @@ void game::setup(int nElect){
     
     loadButtons();
     
-    sequenceFPS = 24;
+    sequenceFPS = 18;
     loadAllImages();
     
     postazione_0 = ofVec2f(7, 113);
-    postazionePos[0] = ofVec2f(305, 55);
-    postazionePos[1] = ofVec2f(750, -25);
-    postazionePos[2] = ofVec2f(1350, 55);
+    postazionePos[0] = ofVec2f(240, 35);
+    postazionePos[1] = ofVec2f(715, -45);
+    postazionePos[2] = ofVec2f(1340, 35);
     postazione_0_NEW = ofVec2f(0, 0);
-    postazionePos_NEW[0] = ofVec2f(360, 0);
-    postazionePos_NEW[1] = ofVec2f(360 + 490, 0);
-    postazionePos_NEW[2] = ofVec2f(360 + 490 + 580 - 25, 0);
+    postazionePos_NEW[0] = ofVec2f(268 - 5, 0);
+    postazionePos_NEW[1] = ofVec2f(268 - 5 + 500, 0);
+    postazionePos_NEW[2] = ofVec2f(268 - 5 + 500 + 620 - 10, 10);
     
     // ** USEFUL TO DEBUG ** //
     is_debugging = false;
@@ -224,9 +224,9 @@ void game::draw(){
        ){
         if(a_pos0_st0_NEW){
             // [ DRAW POSITION PARA VERSIÓN FINAL ]
-            a_pos0_st0[frameIndex_p0].draw(postazione_0_NEW.x, postazione_0_NEW.y);
+            // a_pos0_st0[frameIndex_p0].draw(postazione_0_NEW.x, postazione_0_NEW.y);
         } else {
-            a_pos0_st0[frameIndex_p0].draw(postazione_0.x, postazione_0.y);
+            // a_pos0_st0[frameIndex_p0].draw(postazione_0.x, postazione_0.y);
         }
     }
 
@@ -257,6 +257,7 @@ void game::draw(){
                     i_pos123_st3[i][questionId[i]].draw(postazionePos[i].x, postazionePos[i].y);
                 }
                 
+                // TODO: CHECK ERROR 
                 // Animación niño esperando / niño últimos segundos
                 if(kid_wait_st3[i]){
                     if(a_kid_wait_NEW){
@@ -419,15 +420,15 @@ void game::loadButtons(){
     postCorrectAnswer[0][2] = 2;
     postCorrectAnswer[0][3] = 0;
     postCorrectAnswer[0][4] = 1;
-    postCorrectAnswer[1][0] = 0;
-    postCorrectAnswer[1][1] = 1;
-    postCorrectAnswer[1][2] = 2;
-    postCorrectAnswer[1][3] = 0;
+    postCorrectAnswer[1][0] = 1;
+    postCorrectAnswer[1][1] = 2;
+    postCorrectAnswer[1][2] = 0;
+    postCorrectAnswer[1][3] = 2;
     postCorrectAnswer[1][4] = 1;
     postCorrectAnswer[2][0] = 0;
     postCorrectAnswer[2][1] = 1;
     postCorrectAnswer[2][2] = 2;
-    postCorrectAnswer[2][3] = 0;
+    postCorrectAnswer[2][3] = 1;
     postCorrectAnswer[2][4] = 1;
 }
 
@@ -478,7 +479,7 @@ void game::loadAllImages(){
                 }
                 
                 // VERSIÓN DEFINITIVA ?
-                a_pos123_st1_NEW = false;
+                a_pos123_st1_NEW = true;
                 
                 // POSTAZIONE 1, 2, 3 (same animation - diff variables)
                 string folderKidAnimation[3];
@@ -546,14 +547,14 @@ void game::loadAllImages(){
                 i_arrow[0].load("media/state_3/animation/arrow/arrow_1-3.png");
                 i_arrow[1].load("media/state_3/animation/arrow/arrow_2.png");
                 i_arrow[2].load("media/state_3/animation/arrow/arrow_1-3.png");
-                arrow_pos[0] = ofVec2f(353, 98);
-                arrow_pos[1] = ofVec2f(812, 29);
-                arrow_pos[2] = ofVec2f(1395, 98);
+                arrow_pos[0] = ofVec2f(288, 78);
+                arrow_pos[1] = ofVec2f(770, 5);
+                arrow_pos[2] = ofVec2f(1385, 78);
                 
                 // VERSIÓN FINAL ?
-                i_pos123_st3_NEW = false;
-                a_kid_wait_NEW = false;
-                a_kid_time_NEW = false;
+                i_pos123_st3_NEW = true;
+                a_kid_wait_NEW = true;
+                a_kid_time_NEW = true;
                 
                 // POSTAZIONE 1, 2, 3 (question images)
                 float resizeFactor[3];
@@ -584,11 +585,10 @@ void game::loadAllImages(){
                     // KID WAIT
                     if(!a_kid_wait_NEW){
                         d.listDir("media/state_3/animation/kid_0_wait");
+                    } else {
+                        d.listDir(folderKidWait[i]);
                     }
                     for(int j=0; j<d.size(); j++){
-                        if(a_kid_wait_NEW){
-                            d.listDir(folderKidWait[0]);
-                        }
                         a_kid_wait[i].push_back(ofImage());
                         a_kid_wait[i][j].load(d.getPath(j));
                         if(!a_kid_wait_NEW){
@@ -600,11 +600,10 @@ void game::loadAllImages(){
                     // KID TIME
                     if(!a_kid_time_NEW){
                         d.listDir("media/state_3/animation/kid_1_time");
+                    } else {
+                        d.listDir(folderKidTime[i]);
                     }
                     for(int j=0; j<d.size(); j++){
-                        if(a_kid_time_NEW){
-                            d.listDir(folderKidTime[0]);
-                        }
                         a_kid_time[i].push_back(ofImage());
                         a_kid_time[i][j].load(d.getPath(j));
                         if(!a_kid_time_NEW){
@@ -636,8 +635,8 @@ void game::loadAllImages(){
                 }
                 
                 // VERSIÓN FINAL ?
-                i_pos123_st4_NEW = false;
-                a_kid_wrong_st4_NEW = false;
+                i_pos123_st4_NEW = true;
+                a_kid_wrong_st4_NEW = true;
                 
                 // POSTAZIONE 1, 2, 3 (answer and timeout images)
                 float resizeFactor[3];
@@ -713,8 +712,8 @@ void game::loadAllImages(){
                 }
                 
                 // VERSIÓN FINAL ?
-                i_points_img_NEW = false;
-                a_kid_wrong_st5_NEW = false;
+                i_points_img_NEW = true;
+                a_kid_wrong_st5_NEW = true;
                 
                 // CORRECT or WRONG
                 float resizeFactor[3];
@@ -755,8 +754,8 @@ void game::loadAllImages(){
                 
                 // POINTS IMAGES
                 for(int i=0; i<3; i++){
-                    i_points_img[i][0].load("media/state_5/image/QEND_SI.png");
-                    i_points_img[i][1].load("media/state_5/image/QEND_NO.png");
+                    i_points_img[i][0].load("media/state_5/image/postazione_" + ofToString(i+1) + "/QEND_SI.png");
+                    i_points_img[i][1].load("media/state_5/image/postazione_" + ofToString(i+1) + "/QEND_NO.png");
                     if(!i_points_img_NEW){
                         i_points_img[i][0].resize(i_points_img[i][0].getWidth()*resizeFactor[i],
                                                   i_points_img[i][0].getHeight()*resizeFactor[i]);

@@ -5,7 +5,6 @@
 #include "touchBoard.h"
 #include "gui.h"
 #include "settings.h"
-#include "video.h"
 #include "game.h"
 
 #define N_ELECT 12
@@ -39,9 +38,6 @@ class ofApp : public ofBaseApp{
     
     // Touch Board
     touchBoard touch;
-    
-    // Video
-    video video;
     
     // Game
     game game;

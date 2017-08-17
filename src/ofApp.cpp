@@ -19,11 +19,6 @@ void ofApp::setup(){
     // Touch
     touch.setup(N_ELECT, settings.touchDeviceId);
     
-    // Video
-//    video.setup(N_ELECT, settings.videoType, settings.videoLoadingMode,
-//                settings.videoPosition, settings.videoWidth,
-//                settings.videoElectrode);
-    
     // Game
     game.setup(N_ELECT);
     
@@ -39,18 +34,13 @@ void ofApp::update(){
     gui.update(touch.touchStatus);
     // if( gui.updateVideoSettings ){
         // settings.updateVideoSettings(gui.guiPos);
-        // video.updateVideoSettings(settings.videoPosition);
     // }
-    
-//    video.update(touch.touchStatus);
     
     game.update(touch.touchStatus);
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-
-//    video.draw();
     
     gui.draw();
 
