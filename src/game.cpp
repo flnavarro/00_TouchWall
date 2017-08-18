@@ -55,14 +55,14 @@ void game::setup(int nElect){
     alphaPostazione[1] = 255;
     alphaPostazione[2] = 255;
     
-    timeFont.load("fonts/Verdana.ttf", 10);
+    tiempoRestante.load("fonts/UniversLTStd-BoldCn.otf", 15);
+    tiempoRestActivo = false;
 }
 
 void game::update(vector<bool> touchStatus){
     // --- State 0 - "all waiting touch" --- //
     if(!postazioneStatus[0] && !postazioneStatus[1] && !postazioneStatus[2]){
         touchwallStatus = false;
-        frameIndex_salvap_full = (int)(ofGetElapsedTimef() * sequenceFPS) % anim_salvap_fullscreen.size();
     }
     // --- State 1 - "waiting touch" --- //
     else {
@@ -108,20 +108,8 @@ void game::update(vector<bool> touchStatus){
                     for(int j=0; j<3; j++){
                         // Actualizamos animación niño
                         if(thisElapsedTime < maxAnswerTime-lastSecondsAmount){
-                            if(i==0 || i==2) {
-                                // Frameindex P. 1 y 3
-                                frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_espera_1_3.size();
-                            } else if(i==1) {
-                                // Frameindex P. 2
-                                frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_espera_2.size();
-                            }
                             nino_esperando[i] = true;
                         } else {
-                            if(i==0 || i==2) {
-                                frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_tiempo_1_3.size();
-                            } else if(i==1) {
-                                frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_tiempo_2.size();
-                            }
                             nino_esperando[i] = false;
                         }
                         // Si se toca algún botón ABC
@@ -196,18 +184,8 @@ void game::update(vector<bool> touchStatus){
                     // Actualizar animación de niño correspondiente
                     // dependiendo de si la respuesta es correcta o no
                     if(imgAnswerId[i] == postCorrectAnswer[i][questionId[i]]){
-                        if(i==0 || i==2) {
-                            frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_correcto_1_3.size();
-                        } else if(i==1) {
-                            frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_correcto_2.size();
-                        }
                         nino_correcto[i] = true;
                     } else {
-                        if(i==0 || i==2) {
-                            frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_incorrecto_1_3.size();
-                        } else if(i==1) {
-                            frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_incorrecto_2.size();
-                        }
                         nino_correcto[i] = false;
                     }
                 }
@@ -225,18 +203,8 @@ void game::update(vector<bool> touchStatus){
                 else {
                     // Actualizar animación de niño correspondiente
                     if(postazionePoints[i] >= pointsToPass){
-                        if(i==0 || i==2){
-                            frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_correcto_1_3.size();
-                        } else if (i==1) {
-                            frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_correcto_2.size();
-                        }
                         nino_correcto[i] = true;
                     } else {
-                        if(i==0 || i==2){
-                            frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_incorrecto_1_3.size();
-                        } else if (i==1) {
-                            frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_incorrecto_2.size();
-                        }
                         nino_correcto[i] = false;
                     }
                 }
@@ -264,6 +232,7 @@ void game::draw(){
     if(!touchwallStatus){
         ofPushStyle();
         ofSetColor(255, 255, 255, 255);
+        frameIndex_salvap_full = (int)(ofGetElapsedTimef() * sequenceFPS) % anim_salvap_fullscreen.size();
         anim_salvap_fullscreen[frameIndex_salvap_full].draw(postazione_0.x, postazione_0.y);
         ofPopStyle();
     }
@@ -304,22 +273,25 @@ void game::draw(){
                     num_pregunta_2[questionId[i]].draw(postazionePos[i].x, postazionePos[i].y);
                 }
                 
-                // TODO: CHECK ERROR 
                 // Animación niño esperando / niño últimos segundos
                 if(nino_esperando[i]){
                     if(i==0 || i==2) {
                         // Animación esperando Postazione 1 y 3
+                        frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_espera_1_3.size();
                         anim_espera_1_3[frameIndex_nino[i]].draw(postazionePos[i].x, postazionePos[i].y);
                     } else if(i==1) {
                         // Animación esperando Postazione 2
+                        frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_espera_2.size();
                         anim_espera_2[frameIndex_nino[i]].draw(postazionePos[i].x, postazionePos[i].y);
                     }
                 } else {
                     if(i==0 || i==2) {
                         // Animación últimos segundos Postazione 1 y 3
+                        frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_tiempo_1_3.size();
                         anim_tiempo_1_3[frameIndex_nino[i]].draw(postazionePos[i].x, postazionePos[i].y);
                     } else if(i==1) {
                         // Animación últimos segundos Postazione 2
+                        frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_tiempo_2.size();
                         anim_tiempo_2[frameIndex_nino[i]].draw(postazionePos[i].x, postazionePos[i].y);
                     }
                 }
@@ -327,24 +299,55 @@ void game::draw(){
                 // Animación flecha tiempo
                 ofPushStyle();
                 ofPushMatrix();
-                    ofTranslate(arrow_pos[i].x + img_arrow[i].getWidth()/2, arrow_pos[i].y + img_arrow[i].getHeight()/2);//move pivot to centre
+                ofTranslate(arrow_pos[i].x + img_arrow[i].getWidth()/2, arrow_pos[i].y + img_arrow[i].getHeight()/2);//move pivot to centre
+                if(i==0 || i==2){
+                    ofRotate(ofMap(thisElapsedTime, 0.0, maxAnswerTime, 0, 270));
+                } else if (i==1){
+                    ofRotate(ofMap(thisElapsedTime, 0.0, maxAnswerTime, 0, 290));
+                }
+                ofPushMatrix();
+                ofTranslate(-arrow_pos[i].x-img_arrow[i].getWidth()/2,-arrow_pos[i].y-img_arrow[i].getHeight()/2);//move back by the centre offset
+                ofSetColor(255, 255, 255, 255);
+                img_arrow[i].draw(arrow_pos[i]);
+                
+                // Texto tiempo restante
+                if(tiempoRestActivo){
+                    float marginW;
+                    float marginH;
+                    float extraY;
+                    marginW = img_arrow[i].getWidth()/8;
+                    marginH = img_arrow[i].getHeight()/8;
+                    ofTranslate(arrow_pos[i].x + marginW + tiempoRestante.stringWidth(ofToString((int)(maxAnswerTime-thisElapsedTime))),
+                                arrow_pos[i].y + marginH + tiempoRestante.stringHeight(ofToString((int)(maxAnswerTime-thisElapsedTime))));
                     if(i==0 || i==2){
-                        ofRotate(ofMap(thisElapsedTime, 0.0, 15.0, 0, 270));
+                        if(thisElapsedTime<maxAnswerTime/3){
+                            extraY = 15;
+                        } else if (thisElapsedTime>maxAnswerTime/3 && thisElapsedTime<2*maxAnswerTime/3){
+                            extraY = ofMap(thisElapsedTime, maxAnswerTime/3, 2*maxAnswerTime/3, 15, 25);
+                        } else {
+                            extraY = 25;
+                        }
+                        ofRotate(-ofMap(thisElapsedTime, 0.0, maxAnswerTime, 0, 270));
                     } else if (i==1){
-                        ofRotate(ofMap(thisElapsedTime, 0.0, 15.0, 0, 290));
+                        if(thisElapsedTime<maxAnswerTime/2){
+                            extraY = 15;
+                        } else {
+                            extraY = 25;
+                        }
+                        ofRotate(-ofMap(thisElapsedTime, 0.0, maxAnswerTime, 0, 290));
                     }
-                    ofPushMatrix();
-                        ofTranslate(-arrow_pos[i].x-img_arrow[i].getWidth()/2,-arrow_pos[i].y-img_arrow[i].getHeight()/2);//move back by the centre offset
-                        ofSetColor(255, 255, 255, 255);
-                        img_arrow[i].draw(arrow_pos[i]);
-                    ofPopMatrix();
+                    ofTranslate(-arrow_pos[i].x - marginW - tiempoRestante.stringWidth(ofToString((int)(maxAnswerTime-thisElapsedTime))),
+                                -arrow_pos[i].y - marginH - tiempoRestante.stringHeight(ofToString((int)(maxAnswerTime-thisElapsedTime))));
+                    ofPushStyle();
+                    ofSetColor(0, 255);
+                    tiempoRestante.drawString(ofToString((int)(maxAnswerTime-thisElapsedTime)),
+                                              arrow_pos[i].x + marginW, arrow_pos[i].y + marginH + extraY);
+                    ofPopStyle();
+                }
+                ofPopMatrix();
                 ofPopMatrix();
                 ofPopStyle();
                 
-                // TODO: CAMBIAR ESTO
-                // Texto tiempo restante
-//                timeFont.drawString(ofToString(maxAnswerTime-thisElapsedTime),
-//                                    postazionePos[i].x+350, postazionePos[i].y+100);
             }
             
             // --- State 4 - "showing answer or timeout" --- //
@@ -390,14 +393,18 @@ void game::draw(){
                 // Animación niño respuesta correcta / incorrecta
                 if(nino_correcto[i]){
                     if(i==0 || i==2) {
+                        frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_correcto_1_3.size();
                         anim_correcto_1_3[frameIndex_nino[i]].draw(postazionePos[i].x, postazionePos[i].y);
                     } else if(i==1) {
+                        frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_correcto_2.size();
                         anim_correcto_2[frameIndex_nino[i]].draw(postazionePos[i].x, postazionePos[i].y);
                     }
                 } else {
                     if(i==0 || i==2) {
+                        frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_incorrecto_1_3.size();
                         anim_incorrecto_1_3[frameIndex_nino[i]].draw(postazionePos[i].x, postazionePos[i].y);
                     } else if(i==1) {
+                        frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_incorrecto_2.size();
                         anim_incorrecto_2[frameIndex_nino[i]].draw(postazionePos[i].x, postazionePos[i].y);
                     }
                 }
@@ -422,17 +429,21 @@ void game::draw(){
                 if(nino_correcto[i]){
                     if(i==0 || i==2) {
                         // Animación niño correcto para Postazione 1 y 3
+                        frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_correcto_1_3.size();
                         anim_correcto_1_3[frameIndex_nino[i]].draw(postazionePos[i].x, postazionePos[i].y);
                     } else if (i==1) {
                         // Animación niño correcto para Postazione 2
+                        frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_correcto_2.size();
                         anim_correcto_2[frameIndex_nino[i]].draw(postazionePos[i].x, postazionePos[i].y);
                     }
                 } else {
                     if(i==0 || i==2) {
                         // Animación niño incorrecto para Postazione 1 y 3
+                        frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_incorrecto_1_3.size();
                         anim_incorrecto_1_3[frameIndex_nino[i]].draw(postazionePos[i].x, postazionePos[i].y);
                     } else if (i==1) {
                         // Animación niño incorrecto para Postazione 2
+                        frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_incorrecto_2.size();
                         anim_incorrecto_2[frameIndex_nino[i]].draw(postazionePos[i].x, postazionePos[i].y);
                     }
                 }

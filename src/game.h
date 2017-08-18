@@ -27,8 +27,7 @@ class game {
         // Directorio Imágenes
         ofDirectory dir;
     
-        // Texto en pantalla
-        ofTrueTypeFont timeFont;
+
     
         // WALL & PLACA
         // Bare Conductive
@@ -82,6 +81,8 @@ class game {
         int pointsToPass = 60;
         // Número de respuestas por pregunta
         int numAnswerPerQuestion[3][5];
+        // Enseñar tiempo restante activado/desactivado
+        bool tiempoRestActivo;
 
         // ANIMACIONES
         // FPS de secuencia
@@ -139,6 +140,8 @@ class game {
         // Imagen con número de pregunta
         ofImage num_pregunta_1_3[5];
         ofImage num_pregunta_2[5];
+        // Texto de tiempo restante en pantalla
+        ofTrueTypeFont tiempoRestante;
     
         // --- State 4 - "showing answer or timeout" --- //
         // Imágenes para respuesta elegida o imagen timeout
