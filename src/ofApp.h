@@ -34,7 +34,7 @@ class ofApp : public ofBaseApp{
     
     // Settings
     int appFPS;
-    settings settings;
+    settings gameSettings;
     
     // Touch Board
     touchBoard touch;

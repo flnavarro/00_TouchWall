@@ -5,6 +5,7 @@
 //  Created by Felipe L. Navarro on 04/08/17.
 //
 //
+#pragma once
 
 #include "ofMain.h"
 #include "settings.h"

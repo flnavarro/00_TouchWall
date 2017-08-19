@@ -5,6 +5,7 @@
 //  Created by Felipe L. Navarro on 27/07/17.
 //
 //
+#pragma once
 
 #include "ofMain.h"
 

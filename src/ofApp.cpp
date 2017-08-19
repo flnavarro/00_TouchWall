@@ -14,16 +14,16 @@ void ofApp::setup(){
     // Settings
     appFPS = 60;
     ofSetFrameRate(appFPS);
-    settings.setup();
+    gameSettings.setup();
     
     // Touch
-    touch.setup(N_ELECT, settings.touchDeviceId);
+    touch.setup(N_ELECT, gameSettings.touchDeviceId);
     
     // Game
-    game.setup(N_ELECT, settings);
+    game.setup(N_ELECT, gameSettings);
     
     // GUI
-    gui.setup(N_ELECT, settings.guiActive);
+    gui.setup(N_ELECT, gameSettings.guiActive);
 }
 
 //--------------------------------------------------------------
