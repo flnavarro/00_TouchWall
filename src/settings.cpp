@@ -11,7 +11,7 @@
 void settings::setup(){
     
     // Load xml with general settings
-    if(touchWallSettings.load("xml/touchWallSettings.xml")){
+    if(touchWallSettings.load("xmlSettings/touchWallSettings.xml")){
         if(touchWallSettings.exists("//touchDeviceId")){
             touchDeviceId = touchWallSettings.getValue<int>("//touchDeviceId");
         }
@@ -37,7 +37,7 @@ void settings::setup(){
     }
     
     // Load xml with video positions
-    if(gameSettings.load("xml/gameSettings.xml")){
+    if(gameSettings.load("xmlSettings/gameSettings.xml")){
         if(gameSettings.exists("//guiActive")){
             if(gameSettings.getValue<string>("//guiActive") == "YES"){
                 guiActive = true;
@@ -91,6 +91,6 @@ void settings::setup(){
             }
         }
     }else{
-        ofLogError("Unable to load videoPositions.xml, check data folder");
+        ofLogError("Unable to load xml settings file, check data folder");
     }
 }

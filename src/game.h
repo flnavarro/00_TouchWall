@@ -28,6 +28,11 @@ class game {
         void startPostazione(int postId);
         void updateTimer(int postId);
     
+        // Guardar interacciones - XML
+        void saveInteraction();
+        ofXml xmlInteraction;
+        int numOfInteractionsToday = -1;
+    
         // Debug
         bool is_debugging;
     
@@ -39,38 +44,8 @@ class game {
         int nElectrodes;
         // Estado del electrodo (touched/not touched)
         vector<bool> touchStatus;
-        // Indice del electrodo asociado a cada uno
-        // de los botones de Play Postazione
-        int postElectIndex[3];
-        // Indice del electrodo asociado a cada uno
-        // de los botones de Opciones ABC
-        int optionElectIndex[3][3];
-
-        // POSTAZIONE 1, 2, 3
-        // Estado del touchwall (any postazione is active?)
-        bool touchwallStatus;
-        // Estado de la postazione (playing/stopped)
-        bool postazioneStatus[3];
-        // Pasos de cada pregunta en cada postazione
-        string postazioneStep[3];
-        // Puntos para cada postazione
-        int postazionePoints[3];
-        // Posición en pantalla de cada una de las postaziones
-        // ofVec2f postazionePos[3];
-        // Posición en pantalla de cada una de las postaziones
-        ofVec2f postazionePos[3];
-        // Posición de postazione 0 a la izquierda (información)
-        ofVec2f postazione_0;
-        // Ajuste de transparencias de pregunta para Postazione 3
-        // (no para el niño)
-        ofVec2f ajustePreguntaPost3;
-        // Indices de pregunta y respuesta para cada postazione
-        int questionId[3];
-        int imgAnswerId[3];
-        // Alpha de imágenes [FIJO DE MOMENTO]
-        int alphaPostazione[3];
-
-        // TODO: Pasar a XML
+    
+        // VALORES DE XML
         // Respuestas correctas (indice)
         int postCorrectAnswer[3][5];
         // Tiempo máximo para responder
@@ -88,10 +63,45 @@ class game {
         int numAnswerPerQuestion[3][5];
         // Enseñar tiempo restante activado/desactivado
         bool tiempoRestActivo;
-
-        // ANIMACIONES
+        // Indice del electrodo asociado a cada uno
+        // de los botones de Play Postazione
+        int postElectIndex[3];
+        // Indice del electrodo asociado a cada uno
+        // de los botones de Opciones ABC
+        int optionElectIndex[3][3];
         // FPS de secuencia
         int sequenceFPS;
+
+        // POSTAZIONE 1, 2, 3
+        // Estado del touchwall (any postazione is active?)
+        bool touchwallStatus;
+        // Estado de la postazione (playing/stopped)
+        bool postazioneStatus[3];
+        // Pasos de cada pregunta en cada postazione
+        string postazioneStep[3];
+        // Puntos para cada postazione
+        int postazionePoints[3];
+        // Posición en pantalla de cada una de las postaziones
+        // ofVec2f postazionePos[3];
+        // Posición en pantalla de cada una de las postaziones
+        ofVec2f postazionePos[3];
+        // Posición de postazione 0 a la izquierda (información)
+        ofVec2f postazione_0;
+        // Ajuste para animación de tiempo para Postazione 2
+        // (el reloj necesita algo más de espacio a la izquierda)
+        ofVec2f ajusteAnimTiempoPost2;
+        // Ajuste para imagen de pregunta para Postazione 3
+        // (la altura de los botones no es exactamente la misma que para Postazione 1)
+        ofVec2f ajustePreguntaPost3;
+        // Indices de pregunta y respuesta para cada postazione
+        int questionId[3];
+        int imgAnswerId[3];
+        // Alpha de imágenes [FIJO DE MOMENTO]
+        int alphaPostazione[3];
+
+        // ------------- STATES ------------- //
+        // --- VARIOS STATES --- //
+        // ANIMACIONES
         // Índice de frame para las animaciones del niño
         int frameIndex_nino[3];
         // Índice de frame para la Postazione 0
@@ -101,10 +111,6 @@ class game {
         int prevFrameIndex_p123[3]; // frame previo
         // Último elapsed time guardado en postaziones
         float lastElapsedTime[3]; //p. 1, 2, 3
-
-    
-        // ------------- STATES ------------- //
-        // --- VARIOS STATES --- //
         // Animación niño correcto
         vector<ofImage> anim_correcto_1_3;
         vector<ofImage> anim_correcto_2;

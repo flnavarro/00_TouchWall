@@ -17,10 +17,6 @@
 		EA913E5C1F2F6D4C00E9065B /* gui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA913E5A1F2F6D4C00E9065B /* gui.cpp */; };
 		EA913E911F349CEF00E9065B /* game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA913E8F1F349CEF00E9065B /* game.cpp */; };
 		EAD829521F2A3F8F0059458D /* settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD829501F2A3F8F0059458D /* settings.cpp */; };
-		EAD8295F1F2A423A0059458D /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD829581F2A423A0059458D /* ofxXmlSettings.cpp */; };
-		EAD829601F2A423A0059458D /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD8295B1F2A423A0059458D /* tinyxml.cpp */; };
-		EAD829611F2A423A0059458D /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD8295D1F2A423A0059458D /* tinyxmlerror.cpp */; };
-		EAD829621F2A423A0059458D /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD8295E1F2A423A0059458D /* tinyxmlparser.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,12 +72,6 @@
 		EA913E901F349CEF00E9065B /* game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = game.h; sourceTree = "<group>"; };
 		EAD829501F2A3F8F0059458D /* settings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = settings.cpp; sourceTree = "<group>"; };
 		EAD829511F2A3F8F0059458D /* settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = settings.h; sourceTree = "<group>"; };
-		EAD829581F2A423A0059458D /* ofxXmlSettings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxXmlSettings.cpp; sourceTree = "<group>"; };
-		EAD829591F2A423A0059458D /* ofxXmlSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxXmlSettings.h; sourceTree = "<group>"; };
-		EAD8295B1F2A423A0059458D /* tinyxml.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
-		EAD8295C1F2A423A0059458D /* tinyxml.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
-		EAD8295D1F2A423A0059458D /* tinyxmlerror.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
-		EAD8295E1F2A423A0059458D /* tinyxmlparser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,7 +97,6 @@
 			isa = PBXGroup;
 			children = (
 				EA1F6B2B1F2A0CB90081792B /* ofxTouchBoard */,
-				EAD829561F2A423A0059458D /* ofxXmlSettings */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -181,37 +170,6 @@
 			);
 			name = src;
 			path = ../../../addons/ofxTouchBoard/src;
-			sourceTree = "<group>";
-		};
-		EAD829561F2A423A0059458D /* ofxXmlSettings */ = {
-			isa = PBXGroup;
-			children = (
-				EAD829571F2A423A0059458D /* src */,
-				EAD8295A1F2A423A0059458D /* libs */,
-			);
-			name = ofxXmlSettings;
-			sourceTree = "<group>";
-		};
-		EAD829571F2A423A0059458D /* src */ = {
-			isa = PBXGroup;
-			children = (
-				EAD829581F2A423A0059458D /* ofxXmlSettings.cpp */,
-				EAD829591F2A423A0059458D /* ofxXmlSettings.h */,
-			);
-			name = src;
-			path = ../../../addons/ofxXmlSettings/src;
-			sourceTree = "<group>";
-		};
-		EAD8295A1F2A423A0059458D /* libs */ = {
-			isa = PBXGroup;
-			children = (
-				EAD8295B1F2A423A0059458D /* tinyxml.cpp */,
-				EAD8295C1F2A423A0059458D /* tinyxml.h */,
-				EAD8295D1F2A423A0059458D /* tinyxmlerror.cpp */,
-				EAD8295E1F2A423A0059458D /* tinyxmlparser.cpp */,
-			);
-			name = libs;
-			path = ../../../addons/ofxXmlSettings/libs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -301,10 +259,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EAD8295F1F2A423A0059458D /* ofxXmlSettings.cpp in Sources */,
-				EAD829601F2A423A0059458D /* tinyxml.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
-				EAD829621F2A423A0059458D /* tinyxmlparser.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
 				EA1F6B341F2A0CB90081792B /* ofxTouchBoard.cpp in Sources */,
 				EA1F6B361F2A0CB90081792B /* util.cpp in Sources */,
@@ -313,7 +268,6 @@
 				EA1F6B351F2A0CB90081792B /* Serial.cpp in Sources */,
 				EA913E5C1F2F6D4C00E9065B /* gui.cpp in Sources */,
 				EA913E911F349CEF00E9065B /* game.cpp in Sources */,
-				EAD829611F2A423A0059458D /* tinyxmlerror.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

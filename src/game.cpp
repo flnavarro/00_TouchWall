@@ -29,6 +29,8 @@ void game::setup(int nElect, settings gameSettings){
     postazionePos[0] = ofVec2f(268, 0);
     postazionePos[1] = ofVec2f(268 + 500, 0);
     postazionePos[2] = ofVec2f(268 + 500 + 620 - 15, 0);
+    
+    ajusteAnimTiempoPost2 = ofVec2f(-15, 0);
     ajustePreguntaPost3 = ofVec2f(0, 10);
     
     postazioneStatus[0] = false;
@@ -63,7 +65,7 @@ void game::update(vector<bool> touchStatus){
         
         // --- State 1 - "waiting touch" --- //
         // Si se toca el botón touch de Postazione y el juego no está activo
-        if(!postazioneStatus[i] && touchStatus[postElectIndex[i]] && !is_debugging){
+        if(!postazioneStatus[i] && touchStatus[postElectIndex[i]]){
             // Comenzar juego
             startPostazione(i);
             updateTimer(i);
@@ -79,7 +81,7 @@ void game::update(vector<bool> touchStatus){
             if(postazioneStep[i] == "pre-game"){
                 // Actualizar animación pre-game
                 frameIndex_p123[i] = (int)(thisElapsedTime * sequenceFPS) % anim_entra[i].size();
-                if(frameIndex_p123[i] == 0 && prevFrameIndex_p123[i]!=0 && !is_debugging){
+                if(frameIndex_p123[i] == 0 && prevFrameIndex_p123[i]!=0){
                     // Cuando la animación acaba, pasamos al siguiente estado
                     postazioneStep[i] = "waiting for answer";
                     frameIndex_p123[i] = 0;
@@ -225,7 +227,7 @@ void game::draw(){
         anim_salvap_fullscreen[frameIndex_salvap_full].draw(postazione_0.x, postazione_0.y);
         ofPopStyle();
     }
-
+    
     // Recorremos las 3 postaziones
     for( int i=0; i<3; i++ ){
         // Para Postazione N=i - ACTIVA
@@ -281,7 +283,8 @@ void game::draw(){
                     } else if(i==1) {
                         // Animación últimos segundos Postazione 2
                         frameIndex_nino[i] = (int)(thisElapsedTime * sequenceFPS) % anim_tiempo_2.size();
-                        anim_tiempo_2[frameIndex_nino[i]].draw(postazionePos[i].x, postazionePos[i].y);
+                        anim_tiempo_2[frameIndex_nino[i]].draw(postazionePos[i].x + ajusteAnimTiempoPost2.x,
+                                                               postazionePos[i].y + ajusteAnimTiempoPost2.y);
                     }
                 }
                 
@@ -339,10 +342,6 @@ void game::draw(){
                     ofSetColor(0, 255);
                     tiempoRestante.drawString(ofToString((int)(maxAnswerTime-thisElapsedTime)),
                                               arrow_pos[i].x + marginW + extraX, arrow_pos[i].y + marginH + extraY);
-                    ofLog() << "i -> " << i;
-                    ofLog() << "EXTRA X " << extraX;
-                    ofLog() << "EXTRA Y " << extraY;
-                    ofLog() << "this elapsed " << thisElapsedTime;
                     ofPopStyle();
                 }
                 ofPopMatrix();
@@ -365,6 +364,15 @@ void game::draw(){
                         // (necesita ajuste de pixeles para pregunta por posicion postazione 3 en panel)
                         img_respuestas[i][questionId[i]][imgAnswerId[i]].draw(postazionePos[i].x + ajustePreguntaPost3.x, postazionePos[i].y + ajustePreguntaPost3.y);
                     }
+                    
+                    // Imagen número de pregunta
+                    if(i==0 || i==2){
+                        // Postazione 1, 3
+                        num_pregunta_1_3[questionId[i]].draw(postazionePos[i].x, postazionePos[i].y);
+                    } else if (i==1) {
+                        // Postazione 2
+                        num_pregunta_2[questionId[i]].draw(postazionePos[i].x, postazionePos[i].y);
+                    }
                 }
                 
                 // Imagen fija cuando no hay respuesta - tiempo agotado (timeout)
@@ -382,15 +390,6 @@ void game::draw(){
                     }
                 }
                 
-                // Imagen número de pregunta
-                if(i==0 || i==2){
-                    // Postazione 1, 3
-                    num_pregunta_1_3[questionId[i]].draw(postazionePos[i].x, postazionePos[i].y);
-                } else if (i==1) {
-                    // Postazione 2
-                    num_pregunta_2[questionId[i]].draw(postazionePos[i].x, postazionePos[i].y);
-                }
-
                 // Animación niño respuesta correcta / incorrecta
                 if(nino_correcto[i]){
                     if(i==0 || i==2) {
@@ -482,6 +481,44 @@ void game::startPostazione(int postId){
     frameIndex_p123[postId] = 0;
     prevFrameIndex_p123[postId] = 0;
     frameIndex_nino[postId] = 0;
+    saveInteraction();
+}
+
+void game::saveInteraction(){
+    int month = ofGetMonth();
+    string month_str;
+    if(month<10){
+        month_str = "0" + ofToString(month);
+    } else {
+        month_str = ofToString(month);
+    }
+    int day = ofGetDay();
+    string day_str;
+    if(day<10){
+        day_str = "0" + ofToString(day);
+    } else {
+        day_str = ofToString(day);
+    }
+    string xmlFile = ofToString(ofGetYear()) + "_" + month_str + "_" + day_str + ".xml";
+    string xmlPath = "xmlInteraction/" + xmlFile;
+    ofFile file(ofToDataPath(xmlPath));
+    if(file.exists()){
+        if(xmlInteraction.load(xmlPath)){
+            if(xmlInteraction.exists("//numOfInteractionsToday")){
+                if(numOfInteractionsToday == -1){
+                    numOfInteractionsToday = xmlInteraction.getValue<int>("//numOfInteractionsToday") + 1;
+                } else {
+                    numOfInteractionsToday += 1;
+                }
+                xmlInteraction.setValue("//numOfInteractionsToday", ofToString(numOfInteractionsToday));
+            }
+        }
+    } else {
+        numOfInteractionsToday = 1;
+        xmlInteraction.addChild("interactionCounter");
+        xmlInteraction.addValue("numOfInteractionsToday", ofToString(numOfInteractionsToday));
+    }
+    xmlInteraction.save(xmlPath);
 }
 
 void game::updateTimer(int postId){
@@ -520,6 +557,7 @@ void game::loadXmlSettings(settings gameSettings){
             numAnswerPerQuestion[i][j] = gameSettings.numAnswerPerQuestion[i][j];
         }
     }
+    sequenceFPS = 18;
 }
 
 void game::loadXmlValuesManual(){

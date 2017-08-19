@@ -2,7 +2,6 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    
     // Window
     ofBackground(0);
     ofSetWindowTitle("Touch Wall v0.1");
