@@ -14,6 +14,8 @@
 		EA1F6B351F2A0CB90081792B /* Serial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA1F6B301F2A0CB90081792B /* Serial.cpp */; };
 		EA1F6B361F2A0CB90081792B /* util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA1F6B321F2A0CB90081792B /* util.cpp */; };
 		EA1F6B391F2A0D1D0081792B /* touchBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA1F6B371F2A0D1D0081792B /* touchBoard.cpp */; };
+		EA7563C01F488BC000490C46 /* ofxCsv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA7563BC1F488BC000490C46 /* ofxCsv.cpp */; };
+		EA7563C11F488BC000490C46 /* ofxCsvRow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA7563BE1F488BC000490C46 /* ofxCsvRow.cpp */; };
 		EA913E5C1F2F6D4C00E9065B /* gui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA913E5A1F2F6D4C00E9065B /* gui.cpp */; };
 		EA913E911F349CEF00E9065B /* game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EA913E8F1F349CEF00E9065B /* game.cpp */; };
 		EAD829521F2A3F8F0059458D /* settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EAD829501F2A3F8F0059458D /* settings.cpp */; };
@@ -66,6 +68,10 @@
 		EA1F6B331F2A0CB90081792B /* util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = util.h; sourceTree = "<group>"; };
 		EA1F6B371F2A0D1D0081792B /* touchBoard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = touchBoard.cpp; sourceTree = "<group>"; };
 		EA1F6B381F2A0D1D0081792B /* touchBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = touchBoard.h; sourceTree = "<group>"; };
+		EA7563BC1F488BC000490C46 /* ofxCsv.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCsv.cpp; sourceTree = "<group>"; };
+		EA7563BD1F488BC000490C46 /* ofxCsv.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxCsv.h; sourceTree = "<group>"; };
+		EA7563BE1F488BC000490C46 /* ofxCsvRow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCsvRow.cpp; sourceTree = "<group>"; };
+		EA7563BF1F488BC000490C46 /* ofxCsvRow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxCsvRow.h; sourceTree = "<group>"; };
 		EA913E5A1F2F6D4C00E9065B /* gui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gui.cpp; sourceTree = "<group>"; };
 		EA913E5B1F2F6D4C00E9065B /* gui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gui.h; sourceTree = "<group>"; };
 		EA913E8F1F349CEF00E9065B /* game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = game.cpp; sourceTree = "<group>"; };
@@ -97,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				EA1F6B2B1F2A0CB90081792B /* ofxTouchBoard */,
+				EA7563BA1F488BC000490C46 /* ofxCsv */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -170,6 +177,26 @@
 			);
 			name = src;
 			path = ../../../addons/ofxTouchBoard/src;
+			sourceTree = "<group>";
+		};
+		EA7563BA1F488BC000490C46 /* ofxCsv */ = {
+			isa = PBXGroup;
+			children = (
+				EA7563BB1F488BC000490C46 /* src */,
+			);
+			name = ofxCsv;
+			sourceTree = "<group>";
+		};
+		EA7563BB1F488BC000490C46 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				EA7563BC1F488BC000490C46 /* ofxCsv.cpp */,
+				EA7563BD1F488BC000490C46 /* ofxCsv.h */,
+				EA7563BE1F488BC000490C46 /* ofxCsvRow.cpp */,
+				EA7563BF1F488BC000490C46 /* ofxCsvRow.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxCsv/src;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,6 +287,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
+				EA7563C11F488BC000490C46 /* ofxCsvRow.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
 				EA1F6B341F2A0CB90081792B /* ofxTouchBoard.cpp in Sources */,
 				EA1F6B361F2A0CB90081792B /* util.cpp in Sources */,
@@ -267,6 +295,7 @@
 				EAD829521F2A3F8F0059458D /* settings.cpp in Sources */,
 				EA1F6B351F2A0CB90081792B /* Serial.cpp in Sources */,
 				EA913E5C1F2F6D4C00E9065B /* gui.cpp in Sources */,
+				EA7563C01F488BC000490C46 /* ofxCsv.cpp in Sources */,
 				EA913E911F349CEF00E9065B /* game.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -9,6 +9,7 @@
 
 #include "ofMain.h"
 #include "settings.h"
+#include "ofxCsv.h"
 
 class game {
     
@@ -30,8 +31,8 @@ class game {
     
         // Guardar interacciones - XML
         void saveInteraction();
-        ofXml xmlInteraction;
-        int numOfInteractionsToday = -1;
+        ofxCsv csvInteraction;
+        int numOfInteractionsToday = 0;
     
         // Debug
         bool is_debugging;

@@ -484,43 +484,6 @@ void game::startPostazione(int postId){
     saveInteraction();
 }
 
-void game::saveInteraction(){
-    int month = ofGetMonth();
-    string month_str;
-    if(month<10){
-        month_str = "0" + ofToString(month);
-    } else {
-        month_str = ofToString(month);
-    }
-    int day = ofGetDay();
-    string day_str;
-    if(day<10){
-        day_str = "0" + ofToString(day);
-    } else {
-        day_str = ofToString(day);
-    }
-    string xmlFile = ofToString(ofGetYear()) + "_" + month_str + "_" + day_str + ".xml";
-    string xmlPath = "xmlInteraction/" + xmlFile;
-    ofFile file(ofToDataPath(xmlPath));
-    if(file.exists()){
-        if(xmlInteraction.load(xmlPath)){
-            if(xmlInteraction.exists("//numOfInteractionsToday")){
-                if(numOfInteractionsToday == -1){
-                    numOfInteractionsToday = xmlInteraction.getValue<int>("//numOfInteractionsToday") + 1;
-                } else {
-                    numOfInteractionsToday += 1;
-                }
-                xmlInteraction.setValue("//numOfInteractionsToday", ofToString(numOfInteractionsToday));
-            }
-        }
-    } else {
-        numOfInteractionsToday = 1;
-        xmlInteraction.addChild("interactionCounter");
-        xmlInteraction.addValue("numOfInteractionsToday", ofToString(numOfInteractionsToday));
-    }
-    xmlInteraction.save(xmlPath);
-}
-
 void game::updateTimer(int postId){
     // Actualizar last elapsed time para la Postazione N=postId
     lastElapsedTime[postId] = ofGetElapsedTimef();
@@ -853,4 +816,75 @@ void game::loadAllImages(){
         }
         
     }
+}
+
+void game::saveInteraction(){
+    // Recoger fecha actual
+    int month = ofGetMonth();
+    string month_str;
+    if(month<10){
+        month_str = "0" + ofToString(month);
+    } else {
+        month_str = ofToString(month);
+    }
+    int day = ofGetDay();
+    string day_str;
+    if(day<10){
+        day_str = "0" + ofToString(day);
+    } else {
+        day_str = ofToString(day);
+    }
+    string date = ofToString(ofGetYear()) + "-" + month_str + "-" + day_str;
+    
+    // Crear carpeta csvInteractionCounter si no existe
+    string folder = "csvInteractionCounter/";
+    ofDirectory dir(folder);
+    if(!dir.exists()){
+        dir.create(true);
+    }
+    
+    // Abrir CSV
+    string csvPath = folder + "interactionData.csv";
+    ofFile file(ofToDataPath(csvPath));
+    if(file.exists()){
+        csvInteraction.load(csvPath);
+    } else {
+        csvInteraction.createFile(csvPath);
+        csvInteraction.addRow();
+        csvInteraction[0].addString("Date");
+        csvInteraction[0].addString("Number of Interactions");
+    }
+    bool newDate = true;
+    if(csvInteraction.getNumRows()>1){
+        // Recorremos todas las filas del documento
+        for(int i=1; i<csvInteraction.getNumRows(); i++){
+            // Si la fecha actual ya existe en el csv
+            if(csvInteraction[i][0] == date){
+                // Si es la primera interacción de la ejecución
+                if(numOfInteractionsToday==0){
+                    // Recoger número de interacciones existentes para este día desde csv
+                    numOfInteractionsToday = ofToInt(csvInteraction[i][1]) + 1;
+                } else {
+                    // Sumar interacción
+                    numOfInteractionsToday += 1;
+                }
+                // Escribir número de interacción en csv
+                csvInteraction[i][1] = ofToString(numOfInteractionsToday);
+                // Ya encontramos la fecha - no hay que seguir el for
+                newDate = false;
+                break;
+            }
+        }
+    }
+    
+    // Si la fecha no existe en el csv creamos nueva fila
+    if(newDate){
+        numOfInteractionsToday = 1;
+        csvInteraction.addRow();
+        // Escribir nueva fecha y número de interacción en csv
+        csvInteraction[csvInteraction.getNumRows()-1].addString(date);
+        csvInteraction[csvInteraction.getNumRows()-1].addInt(numOfInteractionsToday);
+    }
+    // Guardar Csv
+    csvInteraction.save(csvPath);
 }
