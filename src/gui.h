@@ -8,13 +8,10 @@
 
 #include "ofMain.h"
 
-#include "ofxDatGui.h"
-
 class gui {
     
     public:
-        void setup(int numElect, bool guiActive,
-                   vector<ofPoint> videoPosition);
+        void setup(int numElect, bool guiActive);
         void update(vector<bool> touchStatus);
         void draw();
     
@@ -29,9 +26,6 @@ class gui {
     
         // GUI
         bool isActive;
-        vector<ofxDatGui*> videoGui;
-        vector<ofPoint> guiPos;
-        bool updateVideoSettings;
     
         // Image
         ofImage panel;

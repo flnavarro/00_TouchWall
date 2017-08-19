@@ -20,10 +20,10 @@ void ofApp::setup(){
     touch.setup(N_ELECT, settings.touchDeviceId);
     
     // Game
-    game.setup(N_ELECT);
+    game.setup(N_ELECT, settings);
     
     // GUI
-    gui.setup(N_ELECT, settings.guiActive, settings.videoPosition);
+    gui.setup(N_ELECT, settings.guiActive);
 }
 
 //--------------------------------------------------------------
@@ -32,9 +32,6 @@ void ofApp::update(){
     touch.update();
     
     gui.update(touch.touchStatus);
-    // if( gui.updateVideoSettings ){
-        // settings.updateVideoSettings(gui.guiPos);
-    // }
     
     game.update(touch.touchStatus);
 }

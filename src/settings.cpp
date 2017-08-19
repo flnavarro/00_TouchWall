@@ -10,83 +10,87 @@
 
 void settings::setup(){
     
-    // General Settings By Default
-    // Device ID for TouchBoard
-    touchDeviceId = 1;
-    // Video Type (VID o PNG)
-    videoType = "VID";
-    // Video Loading Mode (INIT o REQUEST)
-    videoLoadingMode = "INIT";
-    // Forma de Asociar Videos (AUTO o XML) - **INACTIVO DE MOMENTO**
-    videoLink = "AUTO";
-    // Active GUI
-    guiActive = true;
-    
-    // NO LEEMOS ESTO DE MOMENTO
-    /*
     // Load xml with general settings
     if(touchWallSettings.load("xml/touchWallSettings.xml")){
         if(touchWallSettings.exists("//touchDeviceId")){
             touchDeviceId = touchWallSettings.getValue<int>("//touchDeviceId");
         }
-        if(touchWallSettings.exists("//videoType")){
-            videoType = touchWallSettings.getValue<string>("//videoType");
+        string xmlField;
+        for(int i=0; i<3; i++){
+            xmlField = "//postazione" + ofToString(i+1) + "_Play";
+            if(touchWallSettings.exists(xmlField)){
+                postazioneElectIndex[i] = touchWallSettings.getValue<int>(xmlField);
+            }
+            xmlField = "//postazione" + ofToString(i+1) + "_A";
+            if(touchWallSettings.exists(xmlField)){
+                abcElectIndex[i][0] = touchWallSettings.getValue<int>(xmlField);
+            }
+            xmlField = "//postazione" + ofToString(i+1) + "_B";
+            if(touchWallSettings.exists(xmlField)){
+                abcElectIndex[i][1] = touchWallSettings.getValue<int>(xmlField);
+            }
+            xmlField = "//postazione" + ofToString(i+1) + "_C";
+            if(touchWallSettings.exists(xmlField)){
+                abcElectIndex[i][2] = touchWallSettings.getValue<int>(xmlField);
+            }
         }
-        if(touchWallSettings.exists("//videoLoadingMode")){
-            videoLoadingMode = touchWallSettings.getValue<string>("//videoLoadingMode");
-        }
-        if(touchWallSettings.exists("//videoLink")){
-            videoLink = touchWallSettings.getValue<string>("//videoLink");
-        }
-        if(touchWallSettings.exists("//guiActive")){
-            if(touchWallSettings.getValue<string>("//guiActive") == "YES"){
+    }
+    
+    // Load xml with video positions
+    if(gameSettings.load("xml/gameSettings.xml")){
+        if(gameSettings.exists("//guiActive")){
+            if(gameSettings.getValue<string>("//guiActive") == "YES"){
                 guiActive = true;
-            } else if (touchWallSettings.getValue<string>("//guiActive") == "NO"){
+            } else if (gameSettings.getValue<string>("//guiActive") == "NO"){
                 guiActive = false;
             }
         }
-    }
-    */
-    
-    // Load xml with video positions
-    if(videoSettings.load("xml/videoSettings.xml")){
-        if(videoSettings.exists("//video")){
-            videoSettings.setTo("//video[0]");
-            do {
-                videoName.push_back(videoSettings.getValue<string>("name"));
-                videoDesc.push_back(videoSettings.getValue<string>("desc"));
-                videoWidth.push_back(videoSettings.getValue<float>("videoWidth"));
-                ofPoint p;
-                p.x = videoSettings.getValue<float>("posX");
-                p.y = videoSettings.getValue<float>("posY");
-                videoPosition.push_back(p);
-                videoElectrode.push_back(videoSettings.getValue<string>("electrode"));
+        if(gameSettings.exists("//showRemainingTime")){
+            if(gameSettings.getValue<string>("//showRemainingTime") == "YES"){
+                showRemainingTime = true;
+            } else if (gameSettings.getValue<string>("//showRemainingTime") == "NO"){
+                showRemainingTime = false;
             }
-            while(videoSettings.setToSibling());
+        }
+        if(gameSettings.exists("//sequenceFPS")){
+            sequenceFPS = gameSettings.getValue<int>("//sequenceFPS");
+        }
+        if(gameSettings.exists("//maxAnswerTime")){
+            maxAnswerTime = gameSettings.getValue<float>("//maxAnswerTime");
+        }
+        if(gameSettings.exists("//lastSecondsTime")){
+            lastSecondsTime = gameSettings.getValue<float>("//lastSecondsTime");
+        }
+        if(gameSettings.exists("//toNextQuestionTime")){
+            toNextQuestionTime = gameSettings.getValue<float>("//toNextQuestionTime");
+        }
+        if(gameSettings.exists("//pointsTime")){
+            pointsTime = gameSettings.getValue<float>("//pointsTime");
+        }
+        if(gameSettings.exists("//pointsToPass")){
+            pointsToPass = gameSettings.getValue<int>("//pointsToPass");
+        }
+        
+        string xmlField;
+        for(int i=0; i<3; i++){
+            for(int j=0; j<5; j++){
+                xmlField = "//postazione" + ofToString(i+1) + "/question" + ofToString(j+1) + "/correctAnswer";
+                if(gameSettings.exists(xmlField)){
+                    if(gameSettings.getValue<string>(xmlField) == "A"){
+                        postCorrectAnswer[i][j] = 0;
+                    } else if(gameSettings.getValue<string>(xmlField) == "B"){
+                        postCorrectAnswer[i][j] = 1;
+                    } else if(gameSettings.getValue<string>(xmlField) == "C"){
+                        postCorrectAnswer[i][j] = 2;
+                    }
+                }
+                xmlField = "//postazione" + ofToString(i+1) + "/question" + ofToString(j+1) + "/numPossibleAnswers";
+                if(gameSettings.exists(xmlField)){
+                    numAnswerPerQuestion[i][j] = gameSettings.getValue<int>(xmlField);
+                }
+            }
         }
     }else{
         ofLogError("Unable to load videoPositions.xml, check data folder");
-    }
-}
-
-void settings::updateVideoSettings(vector<ofPoint> newVideoPosition){
-    // Update Video Position
-    videoPosition = newVideoPosition;
-    // Save New Positions
-    saveVideoSettings();
-}
-
-void settings::saveVideoSettings(){
-    // Save New Positions to Xml
-    if(videoSettings.load("xml/videoSettings.xml")){
-        if(videoSettings.exists("//video")){
-            for(int i=0; i<videoPosition.size(); i++){
-                string pathX = "//video[" + ofToString(i) + "]/posX";
-                string pathY = "//video[" + ofToString(i) + "]/posY";
-                videoSettings.setValue(pathX, ofToString(videoPosition[i].x));
-                videoSettings.setValue(pathY, ofToString(videoPosition[i].y));
-            }
-            videoSettings.save("xml/videoSettings.xml");
-        }
     }
 }

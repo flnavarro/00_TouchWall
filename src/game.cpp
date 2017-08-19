@@ -8,7 +8,7 @@
 
 #include "game.h"
 
-void game::setup(int nElect){
+void game::setup(int nElect, settings gameSettings){
     
     // Bare Conductive
     nElectrodes = nElect;
@@ -20,9 +20,9 @@ void game::setup(int nElect){
     
     touchwallStatus = false;
     
-    loadButtons();
+    loadXmlSettings(gameSettings);
+    // loadXmlValuesManual();
     
-    sequenceFPS = 18;
     loadAllImages();
     
     postazione_0 = ofVec2f(0, 0);
@@ -31,32 +31,21 @@ void game::setup(int nElect){
     postazionePos[2] = ofVec2f(268 + 500 + 620 - 15, 0);
     ajustePreguntaPost3 = ofVec2f(0, 10);
     
-    // ** USEFUL TO DEBUG ** //
-    is_debugging = false;
-    
     postazioneStatus[0] = false;
     postazioneStatus[1] = postazioneStatus[0];
     postazioneStatus[2] = postazioneStatus[0];
     
-    string init_step[6];
-    init_step[0] = "waiting touch";
-    init_step[1] = "pre-game";
-    init_step[2] = "waiting for answer";
-    init_step[3] = "showing answer";
-    init_step[4] = "showing timeout";
-    init_step[5] = "showing points";
-    postazioneStep[0] = init_step[0];
+    postazioneStep[0] = "waiting touch";
     postazioneStep[1] = postazioneStep[0];
     postazioneStep[2] = postazioneStep[0];
-    // ************* //
     
-    // TODO: NOT USED
     alphaPostazione[0] = 255;
     alphaPostazione[1] = 255;
     alphaPostazione[2] = 255;
     
     tiempoRestante.load("fonts/UniversLTStd-BoldCn.otf", 15);
-    tiempoRestActivo = false;
+    
+    is_debugging = false;
 }
 
 void game::update(vector<bool> touchStatus){
@@ -314,6 +303,7 @@ void game::draw(){
                 if(tiempoRestActivo){
                     float marginW;
                     float marginH;
+                    float extraX;
                     float extraY;
                     marginW = img_arrow[i].getWidth()/8;
                     marginH = img_arrow[i].getHeight()/8;
@@ -321,10 +311,17 @@ void game::draw(){
                                 arrow_pos[i].y + marginH + tiempoRestante.stringHeight(ofToString((int)(maxAnswerTime-thisElapsedTime))));
                     if(i==0 || i==2){
                         if(thisElapsedTime<maxAnswerTime/3){
-                            extraY = 15;
+                            extraY = 0;
+                            extraX = 0;
                         } else if (thisElapsedTime>maxAnswerTime/3 && thisElapsedTime<2*maxAnswerTime/3){
-                            extraY = ofMap(thisElapsedTime, maxAnswerTime/3, 2*maxAnswerTime/3, 15, 25);
+                            extraY = ofMap(thisElapsedTime, maxAnswerTime/3, 2*maxAnswerTime/3, 0, 25);
+                            if(thisElapsedTime>maxAnswerTime/3 && thisElapsedTime<1.5*maxAnswerTime/3){
+                                extraX = ofMap(thisElapsedTime, maxAnswerTime/3, 1.5*maxAnswerTime/3, 0, 20);
+                            } else if (thisElapsedTime>1.5*maxAnswerTime/3 && thisElapsedTime<2*maxAnswerTime/3){
+                                extraX = ofMap(thisElapsedTime, 1.5*maxAnswerTime/3, 2*maxAnswerTime/3, 20, 0);
+                            }
                         } else {
+                            extraX = 0;
                             extraY = 25;
                         }
                         ofRotate(-ofMap(thisElapsedTime, 0.0, maxAnswerTime, 0, 270));
@@ -341,7 +338,11 @@ void game::draw(){
                     ofPushStyle();
                     ofSetColor(0, 255);
                     tiempoRestante.drawString(ofToString((int)(maxAnswerTime-thisElapsedTime)),
-                                              arrow_pos[i].x + marginW, arrow_pos[i].y + marginH + extraY);
+                                              arrow_pos[i].x + marginW + extraX, arrow_pos[i].y + marginH + extraY);
+                    ofLog() << "i -> " << i;
+                    ofLog() << "EXTRA X " << extraX;
+                    ofLog() << "EXTRA Y " << extraY;
+                    ofLog() << "this elapsed " << thisElapsedTime;
                     ofPopStyle();
                 }
                 ofPopMatrix();
@@ -489,7 +490,39 @@ void game::updateTimer(int postId){
     frameIndex_nino[postId] = 0;
 }
 
-void game::loadButtons(){
+void game::loadXmlSettings(settings gameSettings){
+    // Tiempo restante (show?)
+    tiempoRestActivo = gameSettings.showRemainingTime;
+    
+    // FPS Secuencia
+    sequenceFPS = gameSettings.sequenceFPS;
+    
+    // Tiempos
+    maxAnswerTime = gameSettings.maxAnswerTime;
+    lastSecondsAmount = gameSettings.lastSecondsTime;
+    timeToNextQuestion = gameSettings.toNextQuestionTime;
+    timeToEnjoyPoints = gameSettings.pointsTime;
+    
+    // Puntos
+    pointsToPass = gameSettings.pointsToPass;
+    
+    // Panel
+    for(int i=0; i<3; i++){
+        // Botones Postazione -> Index Electrodo
+        postElectIndex[i] = gameSettings.postazioneElectIndex[i];
+        
+        for(int j=0; j<5; j++){
+            // Botones Opciones -> Index Electrodo
+            optionElectIndex[i][j] = gameSettings.abcElectIndex[i][j];
+            // Índice de respuestas correctas
+            postCorrectAnswer[i][j] = gameSettings.postCorrectAnswer[i][j];
+            // Número de respuestas por pregunta
+            numAnswerPerQuestion[i][j] = gameSettings.numAnswerPerQuestion[i][j];
+        }
+    }
+}
+
+void game::loadXmlValuesManual(){
     // Botones Postazione -> Index Electrodo
     // Postazione 1
     postElectIndex[0] = 0;
@@ -519,7 +552,6 @@ void game::loadButtons(){
     optionElectIndex[2][2] = 11;
     
     // Índice de respuestas correctas
-    // TODO: Pasar a XML
     postCorrectAnswer[0][0] = 0;
     postCorrectAnswer[0][1] = 1;
     postCorrectAnswer[0][2] = 2;
@@ -552,6 +584,21 @@ void game::loadButtons(){
     numAnswerPerQuestion[2][2] = 3;
     numAnswerPerQuestion[2][3] = 3;
     numAnswerPerQuestion[2][4] = 3;
+    
+    // Tiempos
+    maxAnswerTime = 15;
+    lastSecondsAmount = 5;
+    timeToNextQuestion = 5;
+    timeToEnjoyPoints = 10;
+    
+    // Puntos
+    pointsToPass = 60;
+    
+    // Tiempo restante (show?)
+    tiempoRestActivo = false;
+    
+    // FPS Secuencia
+    sequenceFPS = 18;
 }
 
 // Cargar todas las imágenes y animaciones necesarias

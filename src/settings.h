@@ -13,33 +13,35 @@ class settings {
     public:
         void setup();
     
-        void updateVideoSettings(vector<ofPoint> newVideoPosition);
-        void saveVideoSettings();
-    
-        // General Settings
+        // Touchwall Settings
         ofXml touchWallSettings;
         // TouchBoard ID
         int touchDeviceId;
-        // Video Type
-        string videoType;
-        // Video Loading Mode
-        string videoLoadingMode;
-        // Video Link
-        string videoLink;
-        // GUI
+        // Electrodos de TouchBoard asociados al juego
+        int postazioneElectIndex[3];
+        int abcElectIndex[3][3];
+
+        // Game Settings Xml
+        ofXml gameSettings;
+        // GUI Activo al abrir?
         bool guiActive;
-    
-        // Video Settings Xml
-        ofXml videoSettings;
-        // Video Filename
-        vector <string> videoName;
-        // Video Description
-        vector <string> videoDesc;
-        // Video Width
-        vector <float> videoWidth;
-        // Video Position in Screen
-        vector <ofPoint> videoPosition;
-        // Video Associated Electrode
-        vector <string> videoElectrode;
+        // Tiempo restante (números) activo?
+        bool showRemainingTime;
+        // Sequence FPS para animaciones
+        int sequenceFPS;
+        // Tiempo: Máximo para responder preguntas
+        float maxAnswerTime;
+        // Tiempo: Últimos segundos para responder
+        float lastSecondsTime;
+        // Tiempo: Para pasar a la siguiente pregunta
+        float toNextQuestionTime;
+        // Tiempo: Para mostrar puntos
+        float pointsTime;
+        // Puntos para aprobar/animación "feliz"
+        int pointsToPass;
+        // Respuestas Correctas
+        int postCorrectAnswer[3][5];
+        // Número de respuestas por pregunta
+        int numAnswerPerQuestion[3][5];
 
 };

@@ -7,17 +7,23 @@
 //
 
 #include "ofMain.h"
+#include "settings.h"
 
 class game {
     
     public:
-        void setup(int nElect);
+        void setup(int nElect, settings gameSettings);
         void update(vector<bool> touchStatus);
         void draw();
     
+        // Cargar todas las imagenes
         void loadAllImages();
     
-        void loadButtons();
+        // Utilizar para cargar settings de xml
+        void loadXmlSettings(settings gameSettings);
+        // Utilizar si no queremos utilizar los settings de xml
+        void loadXmlValuesManual();
+    
         void startPostazione(int postId);
         void updateTimer(int postId);
     
@@ -26,8 +32,6 @@ class game {
     
         // Directorio Imágenes
         ofDirectory dir;
-    
-
     
         // WALL & PLACA
         // Bare Conductive
@@ -69,16 +73,16 @@ class game {
         // Respuestas correctas (indice)
         int postCorrectAnswer[3][5];
         // Tiempo máximo para responder
-        float maxAnswerTime = 15;
+        float maxAnswerTime;
         // Últimos segundos para cada pregunta
         // (Activa otra animación)
-        float lastSecondsAmount = 5;
+        float lastSecondsAmount;
         // Tiempo entre preguntas
-        float timeToNextQuestion = 5;
+        float timeToNextQuestion;
         // Tiempo para la puntuación
-        float timeToEnjoyPoints = 10;
+        float timeToEnjoyPoints;
         // Puntos mínimos para aprobar el juego
-        int pointsToPass = 60;
+        int pointsToPass;
         // Número de respuestas por pregunta
         int numAnswerPerQuestion[3][5];
         // Enseñar tiempo restante activado/desactivado
