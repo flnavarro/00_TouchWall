@@ -14,7 +14,7 @@ class gui {
     public:
         void setup(int numElect, bool guiActive);
         void update(vector<bool> touchStatus);
-        void draw();
+        void draw(int alpha);
     
         void drawTouchBdStatus();
         void changeStatus();

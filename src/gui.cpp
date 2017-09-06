@@ -15,18 +15,20 @@ void gui::setup(int numElect,  bool guiActive){
     
     isActive = guiActive;
     
-    panel.load("debugImg/panel.png");
+    panel.load("debugImg/panelFinal.png");
 }
 
 void gui::update(vector<bool> touchStatus){
     touchBdStatus = touchStatus;
 }
 
-void gui::draw(){
+void gui::draw(int alpha){
     if(isActive){
-        ofSetColor(255,255,255,255);
+        ofPushStyle();
+        ofSetColor(255,255,255,alpha);
         panel.draw(0, 0);
         drawTouchBdStatus();
+        ofPopStyle();
     }
 }
 

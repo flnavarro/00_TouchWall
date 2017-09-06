@@ -86,14 +86,13 @@ class game {
         // ofVec2f postazionePos[3];
         // Posición en pantalla de cada una de las postaziones
         ofVec2f postazionePos[3];
+        ofVec2f anim_pos[3];
+        ofVec2f num_pregunta_pos[3];
         // Posición de postazione 0 a la izquierda (información)
         ofVec2f postazione_0;
         // Ajuste para animación de tiempo para Postazione 2
         // (el reloj necesita algo más de espacio a la izquierda)
         ofVec2f ajusteAnimTiempoPost2;
-        // Ajuste para imagen de pregunta para Postazione 3
-        // (la altura de los botones no es exactamente la misma que para Postazione 1)
-        ofVec2f ajustePreguntaPost3;
         // Indices de pregunta y respuesta para cada postazione
         int questionId[3];
         int imgAnswerId[3];
@@ -123,16 +122,19 @@ class game {
     
         // --- State 0 - "all waiting touch" --- //
         // Animación Postazione 0
-        vector<ofImage> anim_salvap_fullscreen;
+        // vector<ofImage> anim_salvap_fullscreen;
+        ofVideoPlayer anim_salvap_fullscreen;
     
         // --- State 1 - "waiting touch" --- //
         // Animación Salvapantalla Una Postazione
-        vector<ofImage> anim_salvap_1_3;
-        vector<ofImage> anim_salvap_2;
+        ofVideoPlayer anim_salvap_peq;
+        int salvap_peq_idx;
+        ofVec2f salvap_peq_pos[3];
     
         // --- State 2 - "pre-game" --- //
         // Animación Niño entra a Postazione 1, 2, 3
         vector<ofImage> anim_entra[3];
+        ofVec2f anim_entra_pos[3];
     
         // --- State 3 - "waiting answer" --- //
         // Imágenes para las preguntas

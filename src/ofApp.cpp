@@ -3,6 +3,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     // Window
+    // ofBackground(236, 238, 240, 255);
     ofBackground(0);
     ofSetWindowTitle("Touch Wall v0.1");
     WIDTH=1080;
@@ -38,9 +39,11 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     
-    gui.draw();
+    gui.draw(255);
 
     game.draw();
+    
+    // gui.draw(90);
 }
 
 //--------------------------------------------------------------
