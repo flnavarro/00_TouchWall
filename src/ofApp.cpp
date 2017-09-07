@@ -18,7 +18,7 @@ void ofApp::setup(){
     
     // Touch
     touch.setup(N_ELECT, gameSettings.touchDeviceId);
-    keyboardDebug = true;
+    keyboardDebug = false;
     if(keyboardDebug){
         // Initialize Touch Debug Status
         for(int i=0; i<12; i++){
