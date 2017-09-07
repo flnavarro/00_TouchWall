@@ -75,11 +75,16 @@ void game::update(vector<bool> touchStatus){
             anim_salvap_fullscreen.play();
             // Parar salvapantallas de niña esperando interacción
             anim_salvap_peq.stop();
+            alphaSalvap_peq = 0;
         }
         // El status general del touchwall es desactivado
         touchwallStatus = false;
         // Actualizar video salvapantallas fullscreen
         anim_salvap_fullscreen.update();
+        // Alpha para video salvapantallas fullscreen
+        if(alphaSalvap_full < 255){
+            alphaSalvap_full += 10;
+        }
     }
     // --- State 1 - "waiting touch" --- //
     else {
@@ -87,6 +92,7 @@ void game::update(vector<bool> touchStatus){
         if(touchwallStatus == false){
             // Parar salvapantallas general/fullscreen
             anim_salvap_fullscreen.stop();
+            alphaSalvap_full = 0;
             // Activar salvapantallas de niña esperando interacción
             anim_salvap_peq.play();
         }
@@ -111,6 +117,11 @@ void game::update(vector<bool> touchStatus){
     // Recorremos las 3 postaziones
     for( int i=0; i<3; i++ ){
         
+        // Manejar alfas
+        if(alphaPostazione[i] < 255){
+            alphaPostazione[i] += 10;
+        }
+        
         // --- State 1 - "waiting touch" --- //
         // Si se toca el botón touch de Postazione y el juego no está activo
         if(!postazioneStatus[i] && touchStatus[postElectIndex[i]] &&
@@ -123,8 +134,12 @@ void game::update(vector<bool> touchStatus){
         // Si esta postazione está esperando a ser activada
         // y hay salvapantallas asignado a esta postazione
         if(postazioneStep[i] == "waiting touch" && salvap_peq_idx == i){
-            // Actualizar video de salvapantallas
+            // Actualizar video de salvapantallas pequeño (niña)
             anim_salvap_peq.update();
+            // Alpha para video salvap peq (niña)
+            if(alphaSalvap_peq < 255){
+                alphaSalvap_peq += 10;
+            }
         }
         
         // Para Postazione N=i - ACTIVA
@@ -139,7 +154,12 @@ void game::update(vector<bool> touchStatus){
                 anim_entra_vid[i].update();
                 // frameIndex_p123[i] = (int)(thisElapsedTime * sequenceFPS) % anim_entra[i].size();
                 // if(frameIndex_p123[i] == 0 && prevFrameIndex_p123[i]!=0){
-                if(anim_entra_vid[i].getIsMovieDone()){
+                float finalVideoPos[3];
+                finalVideoPos[0] = 0.82;
+                finalVideoPos[1] = 0.5;
+                finalVideoPos[2] = 0.75;
+                if(anim_entra_vid[i].getPosition() > finalVideoPos[i]){
+                // if(anim_entra_vid[i].getIsMovieDone()){
                     anim_entra_vid[i].stop();
                     // Cuando la animación acaba, pasamos al siguiente estado
                     postazioneStep[i] = "waiting for answer";
@@ -281,7 +301,10 @@ void game::draw(){
         if(postazioneStep[i] == "pre-game"){
             // Animación Postazione 1, 2, 3
             // Entrada a postazione -> video de nino_entra/pulsa_n
+            ofPushStyle();
+            ofSetColor(255, 255, 255, alphaPostazione[i]);
             anim_entra_vid[i].draw(postazione_0.x, postazione_0.y);
+            ofPopStyle();
             // anim_entra[i][frameIndex_p123[i]].draw(postazione_0.x, postazione_0.y);
         }
     }
@@ -291,7 +314,7 @@ void game::draw(){
         // Para Postazione N=i - ACTIVA
         if(postazioneStatus[i]){
             ofPushStyle();
-            ofSetColor(255, 255, 255, 255);
+            ofSetColor(255, 255, 255, alphaPostazione[i]);
             
             // Recoger elapsed time
             float thisElapsedTime = ofGetElapsedTimef()-lastElapsedTime[i];
@@ -353,7 +376,7 @@ void game::draw(){
                 }
                 ofPushMatrix();
                 ofTranslate(-arrow_pos[i].x-img_arrow[i].getWidth()/2,-arrow_pos[i].y-img_arrow[i].getHeight()/2);//move back by the centre offset
-                ofSetColor(255, 255, 255, 255);
+                ofSetColor(255, 255, 255, alphaPostazione[i]);
                 img_arrow[i].draw(arrow_pos[i]);
                 
                 // Texto número tiempo restante
@@ -393,7 +416,7 @@ void game::draw(){
                     ofTranslate(-arrow_pos[i].x - marginW - tiempoRestante.stringWidth(ofToString((int)(maxAnswerTime-thisElapsedTime))),
                                 -arrow_pos[i].y - marginH - tiempoRestante.stringHeight(ofToString((int)(maxAnswerTime-thisElapsedTime))));
                     ofPushStyle();
-                    ofSetColor(0, 255);
+                    ofSetColor(0, alphaPostazione[i]);
                     tiempoRestante.drawString(ofToString((int)(maxAnswerTime-thisElapsedTime)),
                                               arrow_pos[i].x + marginW + extraX, arrow_pos[i].y + marginH + extraY);
                     ofPopStyle();
@@ -513,7 +536,7 @@ void game::draw(){
         // Para Postazione N=i - NO ACTIVA
         else {
             ofPushStyle();
-            ofSetColor(255, 255, 255, 255);
+            ofSetColor(255, 255, 255, alphaPostazione[i]);
             // --- State 1 - "waiting touch" --- //
             // Si otra Postazione está ACTIVA
             if(touchwallStatus){
@@ -548,6 +571,9 @@ void game::updateTimer(int postId){
     // Actualizar last elapsed time para la Postazione N=postId
     lastElapsedTime[postId] = ofGetElapsedTimef();
     frameIndex_nino[postId] = 0;
+    if(postazioneStep[postId] != "showing answer" && postazioneStep[postId] != "showing timeout"){
+        alphaPostazione[postId] = 0;
+    }
 }
 
 void game::loadXmlSettings(settings gameSettings){

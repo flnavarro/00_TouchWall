@@ -96,11 +96,11 @@ void ofApp::keyPressed(int key){
         // Postazione 2 - A
         touchStatus_debug[6] = true;
     }
-    if(key == 'b' || key == 'B'){
+    if(key == 's' || key == 'S'){
         // Postazione 2 - B
         touchStatus_debug[7] = true;
     }
-    if(key == 'c' || key == 'C'){
+    if(key == 'd' || key == 'D'){
         // Postazione 2 - C
         touchStatus_debug[8] = true;
     }

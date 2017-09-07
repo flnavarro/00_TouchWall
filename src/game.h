@@ -98,6 +98,8 @@ class game {
         int imgAnswerId[3];
         // Alpha de imágenes [FIJO DE MOMENTO]
         int alphaPostazione[3];
+        int alphaSalvap_full;
+        int alphaSalvap_peq;
 
         // ------------- STATES ------------- //
         // --- VARIOS STATES --- //
