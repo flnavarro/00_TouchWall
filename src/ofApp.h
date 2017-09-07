@@ -37,6 +37,8 @@ class ofApp : public ofBaseApp{
     settings gameSettings;
     
     // Touch Board
+    bool keyboardDebug;
+    vector<bool> touchStatus_debug;
     touchBoard touch;
     
     // Game

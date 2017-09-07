@@ -30,10 +30,6 @@ void game::setup(int nElect, settings gameSettings){
     postazionePos[1] = ofVec2f(300 + 475, -20);
     postazionePos[2] = ofVec2f(300 + 475 + 570, -20);
     
-    anim_entra_pos[0] = ofVec2f(0, 0);
-    anim_entra_pos[1] = ofVec2f(0, 0);
-    anim_entra_pos[2] = ofVec2f(0, 0);
-    
     anim_pos[0] = ofVec2f(postazionePos[0].x + 25, postazionePos[0].y + 60);
     anim_pos[1] = ofVec2f(postazionePos[1].x + 15, postazionePos[1].y + 60);
     anim_pos[2] = ofVec2f(postazionePos[2].x + 25, postazionePos[2].y + 60);
@@ -71,22 +67,34 @@ void game::setup(int nElect, settings gameSettings){
 
 void game::update(vector<bool> touchStatus){
     // --- State 0 - "all waiting touch" --- //
+    // Si no hay ninguna postazione activa
     if(!postazioneStatus[0] && !postazioneStatus[1] && !postazioneStatus[2]){
+        // Si en el frame anterior había alguna postazione activa
         if(touchwallStatus == true){
+            // Activar salvapantallas general/fullscreen
             anim_salvap_fullscreen.play();
+            // Parar salvapantallas de niña esperando interacción
             anim_salvap_peq.stop();
         }
+        // El status general del touchwall es desactivado
         touchwallStatus = false;
+        // Actualizar video salvapantallas fullscreen
         anim_salvap_fullscreen.update();
     }
     // --- State 1 - "waiting touch" --- //
     else {
+        // Si en el frame anterior no había ninguna postazione activa
         if(touchwallStatus == false){
+            // Parar salvapantallas general/fullscreen
             anim_salvap_fullscreen.stop();
+            // Activar salvapantallas de niña esperando interacción
             anim_salvap_peq.play();
         }
+        // El status general del touchwall es activado
         touchwallStatus = true;
         
+        // Asignar video salvapantallas de niña esperando interacción
+        // a una de las postaziones no activadas (waiting touch)
         if(postazioneStep[2] == "waiting touch"){
             salvap_peq_idx = 2;
         } else {
@@ -112,7 +120,10 @@ void game::update(vector<bool> touchStatus){
             updateTimer(i);
         }
         
+        // Si esta postazione está esperando a ser activada
+        // y hay salvapantallas asignado a esta postazione
         if(postazioneStep[i] == "waiting touch" && salvap_peq_idx == i){
+            // Actualizar video de salvapantallas
             anim_salvap_peq.update();
         }
         
@@ -125,8 +136,11 @@ void game::update(vector<bool> touchStatus){
             // --- State 2 - "pre-game" --- //
             if(postazioneStep[i] == "pre-game"){
                 // Actualizar animación pre-game
-                frameIndex_p123[i] = (int)(thisElapsedTime * sequenceFPS) % anim_entra[i].size();
-                if(frameIndex_p123[i] == 0 && prevFrameIndex_p123[i]!=0){
+                anim_entra_vid[i].update();
+                // frameIndex_p123[i] = (int)(thisElapsedTime * sequenceFPS) % anim_entra[i].size();
+                // if(frameIndex_p123[i] == 0 && prevFrameIndex_p123[i]!=0){
+                if(anim_entra_vid[i].getIsMovieDone()){
+                    anim_entra_vid[i].stop();
                     // Cuando la animación acaba, pasamos al siguiente estado
                     postazioneStep[i] = "waiting for answer";
                     frameIndex_p123[i] = 0;
@@ -246,25 +260,30 @@ void game::update(vector<bool> touchStatus){
                 }
             }
         }
-        // Para Postazione N=i - NO ACTIVA
-        else {
-            // Si otra Postazione está ACTIVA
-            if(touchwallStatus){
-                //anim_salvap_peq.update();
-            }
-        }
     }
 }
 
 void game::draw(){
     // --- State 0 - "all waiting touch" --- //
+    // Si no hay nada activado
     if(!touchwallStatus){
         ofPushStyle();
         ofSetColor(255, 255, 255, 255);
-//        frameIndex_salvap_full = (int)(ofGetElapsedTimef() * sequenceFPS) % anim_salvap_fullscreen.size();
-//        anim_salvap_fullscreen[frameIndex_salvap_full].draw(postazione_0.x, postazione_0.y);
+        // Video de salvapantallas fullscreen (general)
         anim_salvap_fullscreen.draw(postazione_0.x, postazione_0.y);
         ofPopStyle();
+    }
+    
+    // Esto va antes para poder superponer sobre video de entrada
+    for(int i=0; i<3; i++){
+        // --- State 2 - "pre-game" --- //
+        // Si estamos en pre-game (video de entrada de niño a postazione)
+        if(postazioneStep[i] == "pre-game"){
+            // Animación Postazione 1, 2, 3
+            // Entrada a postazione -> video de nino_entra/pulsa_n
+            anim_entra_vid[i].draw(postazione_0.x, postazione_0.y);
+            // anim_entra[i][frameIndex_p123[i]].draw(postazione_0.x, postazione_0.y);
+        }
     }
     
     // Recorremos las 3 postaziones
@@ -277,14 +296,8 @@ void game::draw(){
             // Recoger elapsed time
             float thisElapsedTime = ofGetElapsedTimef()-lastElapsedTime[i];
             
-            // --- State 2 - "pre-game" --- //
-            if(postazioneStep[i] == "pre-game"){
-                // Animación Postazione 1, 2, 3
-                anim_entra[i][frameIndex_p123[i]].draw(anim_entra_pos[i].x, anim_entra_pos[i].y);
-            }
-            
             // --- State 3 - "waiting answer" --- //
-            else if(postazioneStep[i] == "waiting for answer"){
+            if(postazioneStep[i] == "waiting for answer"){
                 // Imagen pregunta
                 img_preguntas[i][questionId[i]].draw(postazionePos[i].x, postazionePos[i].y);
                 
@@ -525,7 +538,9 @@ void game::startPostazione(int postId){
     frameIndex_p123[postId] = 0;
     prevFrameIndex_p123[postId] = 0;
     frameIndex_nino[postId] = 0;
-    // anim_salvap_peq.setPosition(0);
+    // Reiniciamos video de entrada (nino_entra/pulsa_n) a postazione
+    anim_entra_vid[postId].setFrame(0);
+    anim_entra_vid[postId].play();
     saveInteraction();
 }
 
@@ -692,13 +707,9 @@ void game::loadAllImages(){
             case 0:
             {
                 // Animación Salvapantallas Fullscreen
-                anim_salvap_fullscreen.load("media/animacion/salvapantallas_fullscreen/00.mp4");
+                anim_salvap_fullscreen.load("media/animacion/salvapantallas_fullscreen/screensave_general.mp4");
+                anim_salvap_fullscreen.setLoopState(OF_LOOP_NORMAL);
                 anim_salvap_fullscreen.play();
-//                d.listDir("media/animacion/salvapantallas_fullscreen");
-//                for(int i=0; i<d.size(); i++){
-//                    anim_salvap_fullscreen.push_back(ofImage());
-//                    anim_salvap_fullscreen[i].load(d.getPath(i));
-//                }
             }
                 break;
                 
@@ -706,8 +717,9 @@ void game::loadAllImages(){
             // STATE 1 - some postazione "waiting touch"
             case 1:
             {
-                // Animación Salvapantallas Niño Una Postazione
+                // Animación Salvapantallas Niña Una Postazione
                 anim_salvap_peq.load("media/animacion/salvapantallas_postazione/screensave_peq.mp4");
+                anim_salvap_peq.setLoopState(OF_LOOP_NORMAL);
             }
                 break;
                 
@@ -717,14 +729,18 @@ void game::loadAllImages(){
             {
                 // POSTAZIONE 1, 2, 3 (different animations)
                 for(int i=0; i<3; i++){
-                    d.listDir("media/animacion/nino_entra/postazione_" + ofToString(i+1));
-                    for(int j=0; j<d.size(); j++){
-                        ofFile file(ofToDataPath(d.getPath(j)));
-                        if(file.getExtension() == "png"){
-                            anim_entra[i].push_back(ofImage());
-                            anim_entra[i][j].load(d.getPath(j));
-                        }
-                    }
+//                    d.listDir("media/animacion/nino_entra/postazione_" + ofToString(i+1));
+//                    for(int j=0; j<d.size(); j++){
+//                        ofFile file(ofToDataPath(d.getPath(j)));
+//                        if(file.getExtension() == "png"){
+//                            anim_entra[i].push_back(ofImage());
+//                            anim_entra[i][j].load(d.getPath(j));
+//                        }
+//                    }
+                    // Video de entrada de niño a postazione
+                    string filePath = "media/animacion/nino_entra/postazione_" + ofToString(i+1) + "/pulsa_n" + ofToString(i+1) + ".mp4";
+                    anim_entra_vid[i].load(filePath);
+                    anim_entra_vid[i].setLoopState(OF_LOOP_NONE);
                 }
             }
                 break;

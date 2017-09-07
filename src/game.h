@@ -104,8 +104,6 @@ class game {
         // ANIMACIONES
         // Índice de frame para las animaciones del niño
         int frameIndex_nino[3];
-        // Índice de frame para la Postazione 0
-        int frameIndex_salvap_full;
         // Índice de frame para la Postazione 1, 2, 3
         int frameIndex_p123[3];
         int prevFrameIndex_p123[3]; // frame previo
@@ -133,8 +131,8 @@ class game {
     
         // --- State 2 - "pre-game" --- //
         // Animación Niño entra a Postazione 1, 2, 3
-        vector<ofImage> anim_entra[3];
-        ofVec2f anim_entra_pos[3];
+        // vector<ofImage> anim_entra[3];
+        ofVideoPlayer anim_entra_vid[3];
     
         // --- State 3 - "waiting answer" --- //
         // Imágenes para las preguntas
