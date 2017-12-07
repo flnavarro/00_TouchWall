@@ -40,6 +40,7 @@ class ofApp : public ofBaseApp{
     bool keyboardDebug;
     vector<bool> touchStatus_debug;
     touchBoard touch;
+    bool bareConductive;
     
     // Game
     game game;
