@@ -322,8 +322,11 @@ void game::draw(){
             // --- State 3 - "waiting answer" --- //
             if(postazioneStep[i] == "waiting for answer"){
                 // Imagen pregunta
-                img_preguntas[i][questionId[i]].draw(postazionePos[i].x, postazionePos[i].y);
                 
+                img_preguntas[i][questionId[i]].draw(postazionePos[i].x,
+                                                     postazionePos[i].y,
+                                                     img_preguntas[i][questionId[i]].getWidth() / imgResRatio,
+                                                     img_preguntas[i][questionId[i]].getHeight() / imgResRatio);
                 // Imagen número de pregunta
                 if(i==0 || i==2){
                     // Postazione 1, 3
@@ -434,7 +437,10 @@ void game::draw(){
                 // Imagen fija de respuesta
                 if(postazioneStep[i] == "showing answer"){
                     // Imagen respuesta
-                    img_respuestas[i][questionId[i]][imgAnswerId[i]].draw(postazionePos[i].x, postazionePos[i].y);
+                    img_respuestas[i][questionId[i]][imgAnswerId[i]].draw(postazionePos[i].x,
+                                                                          postazionePos[i].y,
+                                                                          img_respuestas[i][questionId[i]][imgAnswerId[i]].getWidth() / imgResRatio,
+                                                                          img_respuestas[i][questionId[i]][imgAnswerId[i]].getHeight() / imgResRatio);
                     
                     // Imagen número de pregunta
                     if(i==0 || i==2){
@@ -449,7 +455,10 @@ void game::draw(){
                 // Imagen fija cuando no hay respuesta - tiempo agotado (timeout)
                 if(postazioneStep[i] == "showing timeout"){
                     // Imagen de pregunta
-                    img_preguntas[i][questionId[i]].draw(postazionePos[i].x, postazionePos[i].y);
+                    img_preguntas[i][questionId[i]].draw(postazionePos[i].x,
+                                                         postazionePos[i].y,
+                                                         img_preguntas[i][questionId[i]].getWidth() / imgResRatio,
+                                                         img_preguntas[i][questionId[i]].getHeight() / imgResRatio);
                     
                     // Imagen de timeout
                     if(i==0 || i==2){

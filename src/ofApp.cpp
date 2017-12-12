@@ -76,51 +76,51 @@ void ofApp::keyPressed(int key){
         // Touch Status Debug
         if(key == '1'){
             // Postazione 1 - Play
-            touchStatus_debug[0] = true;
+            touchStatus_debug[gameSettings.postazioneElectIndex[0]] = true;
         }
         if(key == '2'){
             // Postazione 2 - Play
-            touchStatus_debug[1] = true;
+            touchStatus_debug[gameSettings.postazioneElectIndex[1]] = true;
         }
         if(key == '3'){
             // Postazione 3 - Play
-            touchStatus_debug[2] = true;
+            touchStatus_debug[gameSettings.postazioneElectIndex[2]] = true;
         }
         if(key == 'q' || key == 'Q'){
             // Postazione 1 - A
-            touchStatus_debug[3] = true;
+            touchStatus_debug[gameSettings.abcElectIndex[0][0]] = true;
         }
         if(key == 'w' || key == 'W'){
             // Postazione 1 - B
-            touchStatus_debug[4] = true;
+            touchStatus_debug[gameSettings.abcElectIndex[0][1]] = true;
         }
         if(key == 'e' || key == 'E'){
             // Postazione 1 - C
-            touchStatus_debug[5] = true;
+            touchStatus_debug[gameSettings.abcElectIndex[0][2]] = true;
         }
         if(key == 'a' || key == 'A'){
             // Postazione 2 - A
-            touchStatus_debug[6] = true;
+            touchStatus_debug[gameSettings.abcElectIndex[1][0]] = true;
         }
         if(key == 's' || key == 'S'){
             // Postazione 2 - B
-            touchStatus_debug[7] = true;
+            touchStatus_debug[gameSettings.abcElectIndex[1][1]] = true;
         }
         if(key == 'd' || key == 'D'){
             // Postazione 2 - C
-            touchStatus_debug[8] = true;
+            touchStatus_debug[gameSettings.abcElectIndex[1][2]] = true;
         }
         if(key == 'z' || key == 'Z'){
             // Postazione 3 - A
-            touchStatus_debug[9] = true;
+            touchStatus_debug[gameSettings.abcElectIndex[2][0]] = true;
         }
         if(key == 'x' || key == 'X'){
             // Postazione 3 - B
-            touchStatus_debug[10] = true;
+            touchStatus_debug[gameSettings.abcElectIndex[2][1]] = true;
         }
         if(key == 'c' || key == 'c'){
             // Postazione 3 - C
-            touchStatus_debug[11] = true;
+            touchStatus_debug[gameSettings.abcElectIndex[2][2]] = true;
         }
     }
 }
@@ -128,55 +128,55 @@ void ofApp::keyPressed(int key){
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
     if(keyboardDebug){
-        // Touch Status Debug
-        if(key == '1'){
-            // Postazione 1 - Play
-            touchStatus_debug[0] = false;
-        }
-        if(key == '2'){
-            // Postazione 2 - Play
-            touchStatus_debug[1] = false;
-        }
-        if(key == '3'){
-            // Postazione 3 - Play
-            touchStatus_debug[2] = false;
-        }
-        if(key == 'q' || key == 'Q'){
-            // Postazione 1 - A
-            touchStatus_debug[3] = false;
-        }
-        if(key == 'w' || key == 'W'){
-            // Postazione 1 - B
-            touchStatus_debug[4] = false;
-        }
-        if(key == 'e' || key == 'E'){
-            // Postazione 1 - C
-            touchStatus_debug[5] = false;
-        }
-        if(key == 'a' || key == 'A'){
-            // Postazione 2 - A
-            touchStatus_debug[6] = false;
-        }
-        if(key == 's' || key == 'S'){
-            // Postazione 2 - B
-            touchStatus_debug[7] = false;
-        }
-        if(key == 'd' || key == 'D'){
-            // Postazione 2 - C
-            touchStatus_debug[8] = false;
-        }
-        if(key == 'z' || key == 'Z'){
-            // Postazione 3 - A
-            touchStatus_debug[9] = false;
-        }
-        if(key == 'x' || key == 'X'){
-            // Postazione 3 - B
-            touchStatus_debug[10] = false;
-        }
-        if(key == 'c' || key == 'C'){
-            // Postazione 3 - C
-            touchStatus_debug[11] = false;
-        }
+		// Touch Status Debug
+		if (key == '1') {
+			// Postazione 1 - Play
+			touchStatus_debug[gameSettings.postazioneElectIndex[0]] = false;
+		}
+		if (key == '2') {
+			// Postazione 2 - Play
+			touchStatus_debug[gameSettings.postazioneElectIndex[1]] = false;
+		}
+		if (key == '3') {
+			// Postazione 3 - Play
+			touchStatus_debug[gameSettings.postazioneElectIndex[2]] = false;
+		}
+		if (key == 'q' || key == 'Q') {
+			// Postazione 1 - A
+			touchStatus_debug[gameSettings.abcElectIndex[0][0]] = false;
+		}
+		if (key == 'w' || key == 'W') {
+			// Postazione 1 - B
+			touchStatus_debug[gameSettings.abcElectIndex[0][1]] = false;
+		}
+		if (key == 'e' || key == 'E') {
+			// Postazione 1 - C
+			touchStatus_debug[gameSettings.abcElectIndex[0][2]] = false;
+		}
+		if (key == 'a' || key == 'A') {
+			// Postazione 2 - A
+			touchStatus_debug[gameSettings.abcElectIndex[1][0]] = false;
+		}
+		if (key == 's' || key == 'S') {
+			// Postazione 2 - B
+			touchStatus_debug[gameSettings.abcElectIndex[1][1]] = false;
+		}
+		if (key == 'd' || key == 'D') {
+			// Postazione 2 - C
+			touchStatus_debug[gameSettings.abcElectIndex[1][2]] = false;
+		}
+		if (key == 'z' || key == 'Z') {
+			// Postazione 3 - A
+			touchStatus_debug[gameSettings.abcElectIndex[2][0]] = false;
+		}
+		if (key == 'x' || key == 'X') {
+			// Postazione 3 - B
+			touchStatus_debug[gameSettings.abcElectIndex[2][1]] = false;
+		}
+		if (key == 'c' || key == 'c') {
+			// Postazione 3 - C
+			touchStatus_debug[gameSettings.abcElectIndex[2][2]] = false;
+		}
     }
 }
 

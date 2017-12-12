@@ -1,0 +1,15 @@
+<touchWallSettings>
+    <touchDeviceId>0</touchDeviceId>
+    <postazione1_Play>0</postazione1_Play>
+    <postazione2_Play>1</postazione2_Play>
+    <postazione3_Play>2</postazione3_Play>
+    <postazione1_A>3</postazione1_A>
+    <postazione1_B>4</postazione1_B>
+    <postazione1_C>5</postazione1_C>
+    <postazione2_A>6</postazione2_A>
+    <postazione2_B>7</postazione2_B>
+    <postazione2_C>8</postazione2_C>
+    <postazione3_A>9</postazione3_A>
+    <postazione3_B>10</postazione3_B>
+    <postazione3_C>11</postazione3_C>
+</touchWallSettings>

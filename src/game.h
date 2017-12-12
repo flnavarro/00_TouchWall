@@ -39,6 +39,7 @@ class game {
     
         // Directorio Imágenes
         ofDirectory dir;
+        int imgResRatio = 3;
     
         // WALL & PLACA
         // Bare Conductive

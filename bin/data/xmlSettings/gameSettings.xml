@@ -1,5 +1,5 @@
 <gameSettings>
-	<guiActive>YES</guiActive>
+	<guiActive>NO</guiActive>
 	<showRemainingTime>NO</showRemainingTime>
 	<sequenceFPS>18</sequenceFPS>
 	<maxAnswerTime>15</maxAnswerTime>
@@ -13,42 +13,42 @@
 			<numPossibleAnswers>3</numPossibleAnswers>
 		</question1>
 		<question2>
-			<correctAnswer>B</correctAnswer>
-			<numPossibleAnswers>3</numPossibleAnswers>
+			<correctAnswer>A</correctAnswer>
+			<numPossibleAnswers>2</numPossibleAnswers>
 		</question2>
 		<question3>
 			<correctAnswer>A</correctAnswer>
-			<numPossibleAnswers>3</numPossibleAnswers>
+			<numPossibleAnswers>2</numPossibleAnswers>
 		</question3>
 		<question4>
 			<correctAnswer>A</correctAnswer>
-			<numPossibleAnswers>3</numPossibleAnswers>
+			<numPossibleAnswers>2</numPossibleAnswers>
 		</question4>
 		<question5>
-			<correctAnswer>B</correctAnswer>
-			<numPossibleAnswers>3</numPossibleAnswers>
+			<correctAnswer>A</correctAnswer>
+			<numPossibleAnswers>2</numPossibleAnswers>
 		</question5>
 	</postazione1>
 	<postazione2>
 		<question1>
-			<correctAnswer>B</correctAnswer>
-			<numPossibleAnswers>3</numPossibleAnswers>
+			<correctAnswer>A</correctAnswer>
+			<numPossibleAnswers>2</numPossibleAnswers>
 		</question1>
 		<question2>
-			<correctAnswer>C</correctAnswer>
-			<numPossibleAnswers>3</numPossibleAnswers>
+			<correctAnswer>A</correctAnswer>
+			<numPossibleAnswers>2</numPossibleAnswers>
 		</question2>
 		<question3>
 			<correctAnswer>A</correctAnswer>
-			<numPossibleAnswers>3</numPossibleAnswers>
+			<numPossibleAnswers>2</numPossibleAnswers>
 		</question3>
 		<question4>
 			<correctAnswer>A</correctAnswer>
-			<numPossibleAnswers>3</numPossibleAnswers>
+			<numPossibleAnswers>2</numPossibleAnswers>
 		</question4>
 		<question5>
-			<correctAnswer>B</correctAnswer>
-			<numPossibleAnswers>3</numPossibleAnswers>
+			<correctAnswer>A</correctAnswer>
+			<numPossibleAnswers>2</numPossibleAnswers>
 		</question5>
 	</postazione2>
 	<postazione3>
@@ -62,15 +62,15 @@
 		</question2>
 		<question3>
 			<correctAnswer>A</correctAnswer>
-			<numPossibleAnswers>3</numPossibleAnswers>
+			<numPossibleAnswers>2</numPossibleAnswers>
 		</question3>
 		<question4>
-			<correctAnswer>B</correctAnswer>
-			<numPossibleAnswers>3</numPossibleAnswers>
+			<correctAnswer>A</correctAnswer>
+			<numPossibleAnswers>2</numPossibleAnswers>
 		</question4>
 		<question5>
-			<correctAnswer>B</correctAnswer>
-			<numPossibleAnswers>3</numPossibleAnswers>
+			<correctAnswer>A</correctAnswer>
+			<numPossibleAnswers>2</numPossibleAnswers>
 		</question5>
 	</postazione3>
 </gameSettings>
